@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "homepage": "https://syx0219.github.io/scan-test",
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode production",

@@ -9,7 +9,7 @@ import Components from 'unplugin-vue-components/vite';
 import { VantResolver } from '@vant/auto-import-resolver';
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/scan-test/',
   plugins: [
     vue(),
     // vueDevTools(),
