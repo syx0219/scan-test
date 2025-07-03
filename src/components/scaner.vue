@@ -1,16 +1,16 @@
 <template>
   <div class="scaner" ref="scaner">
-    <van-notify v-model:show="showBanner" type="danger" duration="3000">
-      <van-icon class="close_icon" name="close" @click="() => showBanner = false" />
-      <p class="text">{{$t("scaner.notifyText")}}</p>
-    </van-notify>
+    <div class="banner" v-if="showBanner">
+      <i class="close_icon" @click="() => showBanner = false"></i>
+      <p class="text">若当前浏览器无法扫码，请切换其他浏览器尝试</p>
+    </div>
     <div class="cover">
       <p class="line"></p>
       <span class="square top left"></span>
       <span class="square top right"></span>
       <span class="square bottom right"></span>
       <span class="square bottom left"></span>
-      <p class="tips">{{$t("scaner.tips")}}</p>
+      <p class="tips">将二维码放入框内，即可自动扫描</p>
     </div>
     <video
       v-show="showPlay"
@@ -21,32 +21,19 @@
       controls
     ></video>
     <canvas v-show="!showPlay" ref="canvas" />
-    <button v-show="showPlay" @click="run">{{$t("scaner.startBtn")}}</button>
-    <!-- <div class="loaded">
-        <button class="btns" @click="clickFile">选择二维码</button>
-        <input type="file" name="file" hidden ref="file" @change="fileChange">
-    </div> -->
+    <button v-show="showPlay" @click="run">开始</button>
   </div>
 </template>
 
-<script setup name="scaner">
-import { ref, onMounted, defineProps,getCurrentInstance,
-computed,watch, onBeforeUnmount,defineEmits} from "vue";
+<script>
+
+// eslint-disable-next-line no-unused-vars
 import adapter from 'webrtc-adapter';
 import jsQR from 'jsqr';
-const { $t } = getCurrentInstance().proxy;
-const showPlay = ref(false);
-const showBanner = ref(false);
-const containerWidth = ref(null);
-const active = ref(false);
-const video = ref(null);
-const canvas = ref(null);
-const file = ref(null);
-const emit = defineEmits(["code-scanned","error-captured"]);
-const previousCode = ref(null);
-const parity = ref(0);
-const context = computed(()=>canvas.value.getContext('2d'));
-const props = defineProps({
+
+export default {
+  name: 'Scaner',
+  props: {
     // 使用后置相机
     useBackCamera: {
       type: Boolean,
@@ -85,178 +72,192 @@ const props = defineProps({
       type: Boolean,
       default: false
     }
-});
-const clickFile = () => {
-  file.value.click();
-}
-const fileChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageData = new Image();
-      imageData.onload = () => {
-        canvas.value.width = imageData.width / 2;
-        canvas.value.height = imageData.height / 2;
-        context.value.drawImage(imageData, 0, 0, canvas.value.width, canvas.value.height);
-        const imageDataArray = context.value.getImageData(0, 0, canvas.value.width, canvas.value.height).data;
-        const code = jsQR(imageDataArray, canvas.value.width, canvas.value.height);
-        if (code) {
-          // console.log('QR Code Data:', code.data);
-          emit("code-scanned", code.data);
-          // found(code.data);
-        } else {
-          console.error('QR Code not found');
+  },
+  data () {
+    return {
+      showPlay: false,
+      showBanner: true,
+      containerWidth: null,
+      active: false
+    }
+  },
+  computed: {
+    videoWH () {
+      if (this.containerWidth) {
+        const width = this.containerWidth;
+        const height = width * 0.75;
+        return { width, height };
+      }
+      return { width: this.videoWidth, height: this.videoHeight };
+    }
+  },
+  watch: {
+    active: {
+      immediate: true,
+      handler(active) {
+        if (!active) {
+          this.fullStop();
         }
-      };
-      imageData.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-};
-const videoWH = computed(() => {
-  if (containerWidth.value) {
-    const width = containerWidth.value;
-    const height = width * 0.75;
-    return { width, height };
-  }
-  return { width: props.videoWidth, height: props.videoHeight };
-});
-
-const fullStop = () => {
-  if (video.value && video.value.srcObject) {
-    video.value.srcObject.getTracks().forEach(t => t.stop());
-  }
-};
-
-const drawLine = (begin, end) => {
-  context.value.beginPath();
-  context.value.moveTo(begin.x, begin.y);
-  context.value.lineTo(end.x, end.y);
-  context.value.lineWidth = props.lineWidth;
-  context.value.strokeStyle = props.lineColor;
-  context.value.stroke();
-};
-
-const drawBox = (location) => {
-  if (props.drawOnfound) {
-    drawLine(location.topLeftCorner, location.topRightCorner);
-    drawLine(location.topRightCorner, location.bottomRightCorner);
-    drawLine(location.bottomRightCorner, location.bottomLeftCorner);
-    drawLine(location.bottomLeftCorner, location.topLeftCorner);
-  }
-};
-
-const tick = () => {
-  if (video.value && video.value.readyState === video.value.HAVE_ENOUGH_DATA) {
-    canvas.value.height = videoWH().height;
-    canvas.value.width = videoWH().width;
-    context.value.drawImage(video.value, 0, 0, canvas.value.width, canvas.value.height);
-    const imageData = context.value.getImageData(0, 0, canvas.value.width, canvas.value.height);
-    let code = false;
-    try {
-      code = jsQR(imageData.data, imageData.width, imageData.height);
-    } catch (e) {
-      console.error(e);
+      }
     }
-    if (code) {
-      drawBox(code.location);
-      found(code.data);
-    }
-  }
-  run();
-};
-
-const inits = () => {
-  if (props.responsive) {
-    nextTick(() => {
-      containerWidth.value = scaner.value.clientWidth;
-    });
-  }
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    previousCode.value = null;
-    parity.value = 0;
-    active.value = true;
-
-    const facingMode = props.useBackCamera ? { exact: 'environment' } : 'user';
-    const handleSuccess = stream => {
-      video.value.srcObject = stream;
-      video.value.playsInline = true;
-      const playPromise = video.value.play();
-      playPromise.catch(() => (showPlay.value = true));
-      playPromise.then(run);
-    };
-
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode } })
-      .then(handleSuccess)
-      .catch(() => {
+  },
+  methods: {
+    // 画线
+    drawLine (begin, end) {
+      this.canvas.beginPath();
+      this.canvas.moveTo(begin.x, begin.y);
+      this.canvas.lineTo(end.x, end.y);
+      this.canvas.lineWidth = this.lineWidth;
+      this.canvas.strokeStyle = this.lineColor;
+      this.canvas.stroke();
+    },
+    // 画框
+    drawBox (location) {
+      if (this.drawOnfound) {
+        this.drawLine(location.topLeftCorner, location.topRightCorner);
+        this.drawLine(location.topRightCorner, location.bottomRightCorner);
+        this.drawLine(location.bottomRightCorner, location.bottomLeftCorner);
+        this.drawLine(location.bottomLeftCorner, location.topLeftCorner);
+      }
+    },
+    tick () {
+      if (this.$refs.video && this.$refs.video.readyState === this.$refs.video.HAVE_ENOUGH_DATA) {
+        this.$refs.canvas.height = this.videoWH.height;
+        this.$refs.canvas.width = this.videoWH.width;
+        this.canvas.drawImage(this.$refs.video, 0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+        const imageData = this.canvas.getImageData(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+        let code = false;
+        try {
+          code = jsQR(imageData.data, imageData.width, imageData.height);
+        } catch (e) {
+          console.error(e);
+        }
+        if (code) {
+          this.drawBox(code.location);
+          this.found(code.data);
+        }
+      }
+      this.run();
+    },
+    // 初始化
+    setup () {
+      if (this.responsive) {
+        this.$nextTick(() => {
+          this.containerWidth = this.$refs.scaner.clientWidth;
+        });
+      }
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        this.previousCode = null;
+        this.parity = 0;
+        this.active = true;
+        this.canvas = this.$refs.canvas.getContext("2d");
+        const facingMode = this.useBackCamera ? { exact: 'environment' } : 'user';
+        const handleSuccess = stream => {
+           if (this.$refs.video.srcObject !== undefined) {
+            this.$refs.video.srcObject = stream;
+          } else if (window.videoEl.mozSrcObject !== undefined) {
+            this.$refs.video.mozSrcObject = stream;
+          } else if (window.URL.createObjectURL) {
+            this.$refs.video.src = window.URL.createObjectURL(stream);
+          } else if (window.webkitURL) {
+            this.$refs.video.src = window.webkitURL.createObjectURL(stream);
+          } else {
+            this.$refs.video.src = stream;
+          }
+          this.$refs.video.playsInline = true;
+          const playPromise = this.$refs.video.play();
+          playPromise.catch(() => (this.showPlay = true));
+          playPromise.then(this.run);
+        };
         navigator.mediaDevices
-          .getUserMedia({ video: true })
+          .getUserMedia({ video: { facingMode } })
           .then(handleSuccess)
-          .catch(error => {
-            emit("error-captured", error);
+          .catch(() => {
+            navigator.mediaDevices
+              .getUserMedia({ video: true })
+              .then(handleSuccess)
+              .catch(error => {
+                this.$emit("error-captured", error);
+              });
           });
-      });
+      }
+    },
+    run () {
+      if (this.active) {
+        requestAnimationFrame(this.tick);
+      }
+    },
+    found (code) {
+      if (this.previousCode !== code) {
+        this.previousCode = code;
+      } else if (this.previousCode === code) {
+        this.parity += 1;
+      }
+      if (this.parity > 2) {
+        this.active = this.stopOnScanned ? false : true;
+        this.parity = 0;
+        this.$emit("code-scanned", code);
+      }
+    },
+    // 完全停止
+    fullStop () {
+      if (this.$refs.video && this.$refs.video.srcObject) {
+        this.$refs.video.srcObject.getTracks().forEach(t => t.stop());
+      }
+    }
+  },
+  mounted () {
+    this.setup();
+  },
+  beforeDestroy () {
+    this.fullStop();
   }
-};
-
-const run = () => {
-  if (active.value) {
-    requestAnimationFrame(tick);
-  }
-};
-
-const found = (code) => {
-  if (previousCode.value !== code) {
-    previousCode.value = code;
-  } else if (previousCode.value === code) {
-    parity.value += 1;
-  }
-  if (parity.value > 2) {
-    active.value = props.stopOnScaned ? false : true;
-    parity.value = 0;
-    emit("code-scanned", code);
-  }
-};
-
-onMounted(() => {
-  inits();
-  showBanner.value = true;
-});
-
-onBeforeUnmount(() => {
-  fullStop();
-});
-
-watch(active, (newActive) => {
-  if (!newActive) {
-    fullStop();
-  }
-}, { immediate: true });
+}
 </script>
 
 <style lang="css" scoped>
 .scaner {
-  background: rgba(0,0,0,0.8);
+  background: #000000;
+  position: fixed;
+  top: 48px;
+  left: 0;
   width: 100%;
   height: 100%;
-  position: relative;
+  height: -webkit-calc(100% - 48px);
+  height: -moz-calc(100% - 48px);
+  height: -ms-calc(100% - 48px);
+  height: -o-calc(100% - 48px);
+  height: calc(100% - 48px);
 }
-.scaner .text {
+.scaner .banner {
+  width: 340px;
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  margin-left: -170px;
+  background: #FA74A2;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 12px;
+  opacity: 0.9;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+}
+.scaner .banner .text {
   padding: 0;
   margin: 0;
   color: #FFFFFF;
   font-size: 12px;
   text-align: justify;
   text-align-last: left;
-  width: 90%;
 }
-.scaner .close_icon {
+.scaner .banner .close_icon {
   display: inline-block;
-  font-size: 20px;
+  height: 24px;
+  width: 24px;
+  background: url('../assets/close.png') no-repeat center;
+  background-size: auto 100%;
   position: absolute;
-  right: 5px;
+  right: 8px;
   top: 8px;
 }
 .scaner .cover {
@@ -277,8 +278,8 @@ watch(active, (newActive) => {
   width: 200px;
   height: 1px;
   margin-left: 10px;
-  background: #02a6f7;
-  background: linear-gradient(to right, transparent, #02a6f7, #00A0F0, #02a6f7, transparent);
+  background: #5F68E8;
+  background: linear-gradient(to right, transparent, #5F68E8, #0165FF, #5F68E8, transparent);
   position: absolute;
   -webkit-animation: scan 1.75s infinite linear;
   -moz-animation: scan 1.75s infinite linear;
@@ -300,26 +301,26 @@ watch(active, (newActive) => {
 }
 .scaner .cover .square.top {
   top: 0;
-  border-top: 1px solid #02a6f7;
+  border-top: 1px solid #5F68E8;
 }
 .scaner .cover .square.left {
   left: 0;
-  border-left: 1px solid #02a6f7;
+  border-left: 1px solid #5F68E8;
 }
 .scaner .cover .square.bottom {
   bottom: 0;
-  border-bottom: 1px solid #02a6f7;
+  border-bottom: 1px solid #5F68E8;
 }
 .scaner .cover .square.right {
  right: 0;
-  border-right: 1px solid #02a6f7;
+  border-right: 1px solid #5F68E8;
 }
 .scaner .cover .tips {
   position: absolute;
-  bottom: -55px;
+  bottom: -48px;
   width: 100%;
   font-size: 14px;
-  color: #fff;
+  color: #FFFFFF;
   opacity: 0.8;
 }
 @-webkit-keyframes scan {
@@ -349,22 +350,5 @@ watch(active, (newActive) => {
   50% {top: 100px}
   75% {top: 150px}
   100% {top: 200px}
-}
-.scaner .loaded{
-    width: 100%;
-    position: absolute;
-    bottom: 90px;
-}
-.scaner .loaded .btns{
-    width: 150px;
-    display: block;
-    margin: 0 auto;
-    background-color: #009FF1;
-    color: #FFFFFF;
-    border-radius: 8px;
-    font-size: 16px;
-    line-height: 30px;
-    border: 0;
-    outline: none;
 }
 </style>
