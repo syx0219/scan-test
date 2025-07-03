@@ -219,15 +219,15 @@ export default {
 .scaner {
   background: #000000;
   position: fixed;
-  top: 48px;
+  top: inherit;
   left: 0;
   width: 100%;
   height: 100%;
-  height: -webkit-calc(100% - 48px);
+  /* height: -webkit-calc(100% - 48px);
   height: -moz-calc(100% - 48px);
   height: -ms-calc(100% - 48px);
   height: -o-calc(100% - 48px);
-  height: calc(100% - 48px);
+  height: calc(100% - 48px); */
 }
 .scaner .banner {
   width: 340px;
@@ -235,7 +235,7 @@ export default {
   top: 16px;
   left: 50%;
   margin-left: -170px;
-  background: #FA74A2;
+  background: red;
   border-radius: 8px;
   box-sizing: border-box;
   padding: 12px;
