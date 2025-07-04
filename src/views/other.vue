@@ -54,7 +54,7 @@ const switchCamera = () => {
 const onDetect = (result) => {
     if (!isScanning.value) return; // 如果已停止扫描，不处理结果
     const decodedText = result[0]?.rawValue;
-    console.log(decodedText)
+    alert(decodedText)
 }
 // 摄像头错误处理
 const onCameraError = async (error) => {
