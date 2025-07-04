@@ -151,7 +151,7 @@ onMounted(() => {
 /* 扫描线动画 */
 .scan-frame::after {
     content: "";
-    osition: absolute;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
