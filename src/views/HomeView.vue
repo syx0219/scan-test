@@ -12,7 +12,6 @@
         :draw-on-found="true"
         :responsive="false"
       /> -->
-      <QrScanner v-if="showQrCodeReader" @decode="onDecodeHandler" @close="qrReaderClose" />
     </div>
     <van-dialog v-model:show="show" :title="$t('home.result')"
      :confirmButtonText="$t('home.confirmBtn')" @confirm="toSubmit">
@@ -31,7 +30,7 @@
 <script setup>
 import {onMounted, ref,getCurrentInstance} from 'vue';
 // import Scaner from '@/components/scaner.vue';
-import { QrScanner } from '@/components/QrScanner'
+
 const { $t } = getCurrentInstance().proxy;
 const errorMessage = ref("");
 const show = ref(false);
@@ -72,23 +71,13 @@ const errorCaptured = (error) => {
   }
   showFailToast(errorMessage.value);
 }
-const paymentData = reactive({
-  orderId: '',
-  authCode: ''
-})
-const onDecodeHandler = (data) => {
-  paymentData.authCode = data
-  showQrCodeReader.value = false
-}
-const qrReaderClose = () => {
-  showQrCodeReader.value = false
-}
+
 onMounted(() => {
-  // var str = navigator.userAgent.toLowerCase(); 
-  // var ver = str.match(/cpu iphone os (.*?) like mac os/);
-  // if (ver && ver[1].replace(/_/g,".") < '10.3.3') {
-  //   showFailToast($t("home.failText"));
-  // }
+  var str = navigator.userAgent.toLowerCase(); 
+  var ver = str.match(/cpu iphone os (.*?) like mac os/);
+  if (ver && ver[1].replace(/_/g,".") < '10.3.3') {
+    showFailToast($t("home.failText"));
+  }
 })
 </script>
 <style scoped>

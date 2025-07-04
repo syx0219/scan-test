@@ -1,10 +1,11 @@
 <template>
   <div class="app">
+    <RouterLink to="/other">other</RouterLink>
     <RouterView />
   </div>
 </template>
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView,RouterLink } from 'vue-router'
 </script>
 <style scoped>
 .app {
