@@ -103,6 +103,7 @@ export default {
   methods: {
     // 画线
     drawLine(begin, end) {
+      alert('进来了')
       this.canvas.beginPath()
       this.canvas.moveTo(begin.x, begin.y)
       this.canvas.lineTo(end.x, end.y)
@@ -121,6 +122,7 @@ export default {
     },
     tick() {
       if (this.$refs.video && this.$refs.video.readyState === this.$refs.video.HAVE_ENOUGH_DATA) {
+        alert('进来了呀 -333')
         this.$refs.canvas.height = this.videoWH.height
         this.$refs.canvas.width = this.videoWH.width
         this.canvas.drawImage(
@@ -140,6 +142,7 @@ export default {
         try {
           code = jsQR(imageData.data, imageData.width, imageData.height)
         } catch (e) {
+          alert(e)
           console.error(e)
         }
         if (code) {
@@ -161,8 +164,8 @@ export default {
         this.parity = 0
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
-        const facingMode = this.useBackCamera ? { exact: 'environment' } : 'user'
         const handleSuccess = (stream) => {
+          alert('进来了呀 -11')
           if (this.$refs.video.srcObject !== undefined) {
             this.$refs.video.srcObject = stream
           } else if (window.videoEl.mozSrcObject !== undefined) {
@@ -201,6 +204,7 @@ export default {
     },
     run() {
       if (this.active) {
+        alert('进来了呀 -22')
         requestAnimationFrame(this.tick)
       }
     },
