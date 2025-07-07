@@ -12,6 +12,8 @@
       <span class="square bottom left"></span>
       <p class="tips">将二维码放入框内，即可自动扫描</p>
     </div>
+    {{ videoWH.width }}
+    {{ videoWH.height }}
     <video
       v-show="showPlay"
       class="source"
@@ -179,8 +181,6 @@ export default {
           playPromise.catch(() => (this.showPlay = true))
           playPromise.then(this.run)
         }
-        alert('Width' + this.videoWH.width)
-        alert('Height' + this.videoWH.height)
         navigator.mediaDevices
           .getUserMedia({
             video: {
