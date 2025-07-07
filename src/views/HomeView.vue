@@ -5,13 +5,14 @@
     </div>
     <h1 class="title">{{$t("home.title")}}</h1>
     <div class="scroll-container">
-      <!-- <Scaner
+      
+      <Scaner
         v-on:code-scanned="codeScanned"
         v-on:error-captured="errorCaptured"
         :stop-on-scanned="true"
         :draw-on-found="true"
         :responsive="false"
-      /> -->
+      />
     </div>
     <van-dialog v-model:show="show" :title="$t('home.result')"
      :confirmButtonText="$t('home.confirmBtn')" @confirm="toSubmit">
@@ -29,7 +30,7 @@
 </template>
 <script setup>
 import {onMounted, ref,getCurrentInstance} from 'vue';
-// import Scaner from '@/components/scaner.vue';
+import Scaner from '@/components/scaner.vue';
 
 const { $t } = getCurrentInstance().proxy;
 const errorMessage = ref("");
