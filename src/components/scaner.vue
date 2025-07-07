@@ -16,8 +16,8 @@
       v-show="showPlay"
       class="source"
       ref="video"
-      width="375px"
-      height="680px"
+      :width="videoWH.width"
+      :height="videoWH.height"
       controls
     ></video>
     <canvas v-show="!showPlay" ref="canvas" />
@@ -181,10 +181,11 @@ export default {
         }
         navigator.mediaDevices
           .getUserMedia({
+            audio: false,
             video: {
               facingMode: { exact: 'environment' },
-              width: 375,
-              height: 680,
+              width: this.videoWH.height,
+              height: this.videoWH.width,
             },
           })
           .then(handleSuccess)
