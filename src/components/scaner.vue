@@ -12,14 +12,12 @@
       <span class="square bottom left"></span>
       <p class="tips">将二维码放入框内，即可自动扫描</p>
     </div>
-    {{ videoWH.width }}
-    {{ videoWH.height }}
     <video
       v-show="showPlay"
       class="source"
       ref="video"
-      :width="videoWH.width"
-      :height="videoWH.height"
+      width="375px"
+      height="680px"
       controls
     ></video>
     <canvas v-show="!showPlay" ref="canvas" />
@@ -185,8 +183,8 @@ export default {
           .getUserMedia({
             video: {
               facingMode: { exact: 'environment' },
-              width: this.videoWH.width,
-              height: this.videoWH.height,
+              width: 375,
+              height: 680,
             },
           })
           .then(handleSuccess)
