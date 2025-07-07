@@ -179,6 +179,8 @@ export default {
           playPromise.catch(() => (this.showPlay = true))
           playPromise.then(this.run)
         }
+        alert('Width' + this.videoWH.width)
+        alert('Height' + this.videoWH.height)
         navigator.mediaDevices
           .getUserMedia({
             video: {
