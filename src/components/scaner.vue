@@ -122,7 +122,6 @@ export default {
     },
     tick() {
       if (this.$refs.video && this.$refs.video.readyState === this.$refs.video.HAVE_ENOUGH_DATA) {
-        alert('进来了呀 -333')
         this.$refs.canvas.height = this.videoWH.height
         this.$refs.canvas.width = this.videoWH.width
         this.canvas.drawImage(
@@ -138,7 +137,7 @@ export default {
           this.$refs.canvas.width,
           this.$refs.canvas.height
         )
-        let code = false
+        let code = ''
         try {
           code = jsQR(imageData.data, imageData.width, imageData.height)
         } catch (e) {
@@ -146,6 +145,7 @@ export default {
           console.error(e)
         }
         if (code) {
+          alert(code)
           this.drawBox(code.location)
           this.found(code.data)
         }
@@ -165,7 +165,6 @@ export default {
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
         const handleSuccess = (stream) => {
-          alert('进来了呀 -11')
           if (this.$refs.video.srcObject !== undefined) {
             this.$refs.video.srcObject = stream
           } else if (window.videoEl.mozSrcObject !== undefined) {
@@ -204,7 +203,6 @@ export default {
     },
     run() {
       if (this.active) {
-        alert('进来了呀 -22')
         requestAnimationFrame(this.tick)
       }
     },
