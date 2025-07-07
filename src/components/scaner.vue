@@ -1,7 +1,7 @@
 <template>
   <div class="scaner" ref="scaner">
     <div class="banner" v-if="showBanner">
-      <i class="close_icon" @click="() => showBanner = false"></i>
+      <i class="close_icon" @click="() => (showBanner = false)"></i>
       <p class="text">若当前浏览器无法扫码，请切换其他浏览器尝试</p>
     </div>
     <div class="cover">
@@ -26,10 +26,9 @@
 </template>
 
 <script>
-
 // eslint-disable-next-line no-unused-vars
-import adapter from 'webrtc-adapter';
-import jsQR from 'jsqr';
+import adapter from 'webrtc-adapter'
+import jsQR from 'jsqr'
 
 export default {
   name: 'Scaner',
@@ -37,181 +36,198 @@ export default {
     // 使用后置相机
     useBackCamera: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 扫描识别后停止
     stopOnScaned: {
       type: Boolean,
-      default: true
+      default: true,
     },
     drawOnfound: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 线条颜色
     lineColor: {
       type: String,
-      default: '#03C03C'
+      default: '#03C03C',
     },
     // 线条宽度
     lineWidth: {
       type: Number,
-      default: 2
+      default: 2,
     },
     // 视频宽度
     videoWidth: {
       type: Number,
-      default: document.documentElement.clientWidth || document.body.clientWidth
+      default: document.documentElement.clientWidth || document.body.clientWidth,
     },
     // 视频高度
     videoHeight: {
       type: Number,
-      default: document.documentElement.clientHeight - 48 || document.body.clientHeight - 48
+      default: document.documentElement.clientHeight - 48 || document.body.clientHeight - 48,
     },
     responsive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       showPlay: false,
       showBanner: true,
       containerWidth: null,
-      active: false
+      active: false,
     }
   },
   computed: {
-    videoWH () {
+    videoWH() {
       if (this.containerWidth) {
-        const width = this.containerWidth;
-        const height = width * 0.75;
-        return { width, height };
+        const width = this.containerWidth
+        const height = width * 0.75
+        return { width, height }
       }
-      return { width: this.videoWidth, height: this.videoHeight };
-    }
+      return { width: this.videoWidth, height: this.videoHeight }
+    },
   },
   watch: {
     active: {
       immediate: true,
       handler(active) {
         if (!active) {
-          this.fullStop();
+          this.fullStop()
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     // 画线
-    drawLine (begin, end) {
-      this.canvas.beginPath();
-      this.canvas.moveTo(begin.x, begin.y);
-      this.canvas.lineTo(end.x, end.y);
-      this.canvas.lineWidth = this.lineWidth;
-      this.canvas.strokeStyle = this.lineColor;
-      this.canvas.stroke();
+    drawLine(begin, end) {
+      this.canvas.beginPath()
+      this.canvas.moveTo(begin.x, begin.y)
+      this.canvas.lineTo(end.x, end.y)
+      this.canvas.lineWidth = this.lineWidth
+      this.canvas.strokeStyle = this.lineColor
+      this.canvas.stroke()
     },
     // 画框
-    drawBox (location) {
+    drawBox(location) {
       if (this.drawOnfound) {
-        this.drawLine(location.topLeftCorner, location.topRightCorner);
-        this.drawLine(location.topRightCorner, location.bottomRightCorner);
-        this.drawLine(location.bottomRightCorner, location.bottomLeftCorner);
-        this.drawLine(location.bottomLeftCorner, location.topLeftCorner);
+        this.drawLine(location.topLeftCorner, location.topRightCorner)
+        this.drawLine(location.topRightCorner, location.bottomRightCorner)
+        this.drawLine(location.bottomRightCorner, location.bottomLeftCorner)
+        this.drawLine(location.bottomLeftCorner, location.topLeftCorner)
       }
     },
-    tick () {
+    tick() {
       if (this.$refs.video && this.$refs.video.readyState === this.$refs.video.HAVE_ENOUGH_DATA) {
-        this.$refs.canvas.height = this.videoWH.height;
-        this.$refs.canvas.width = this.videoWH.width;
-        this.canvas.drawImage(this.$refs.video, 0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
-        const imageData = this.canvas.getImageData(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
-        let code = false;
+        this.$refs.canvas.height = this.videoWH.height
+        this.$refs.canvas.width = this.videoWH.width
+        this.canvas.drawImage(
+          this.$refs.video,
+          0,
+          0,
+          this.$refs.canvas.width,
+          this.$refs.canvas.height
+        )
+        const imageData = this.canvas.getImageData(
+          0,
+          0,
+          this.$refs.canvas.width,
+          this.$refs.canvas.height
+        )
+        let code = false
         try {
-          code = jsQR(imageData.data, imageData.width, imageData.height);
+          code = jsQR(imageData.data, imageData.width, imageData.height)
         } catch (e) {
-          console.error(e);
+          console.error(e)
         }
         if (code) {
-          this.drawBox(code.location);
-          this.found(code.data);
+          this.drawBox(code.location)
+          this.found(code.data)
         }
       }
-      this.run();
+      this.run()
     },
     // 初始化
-    setup () {
+    setup() {
       if (this.responsive) {
         this.$nextTick(() => {
-          this.containerWidth = this.$refs.scaner.clientWidth;
-        });
+          this.containerWidth = this.$refs.scaner.clientWidth
+        })
       }
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        this.previousCode = null;
-        this.parity = 0;
-        this.active = true;
-        this.canvas = this.$refs.canvas.getContext("2d");
-        const facingMode = this.useBackCamera ? { exact: 'environment' } : 'user';
-        const handleSuccess = stream => {
-           if (this.$refs.video.srcObject !== undefined) {
-            this.$refs.video.srcObject = stream;
+        this.previousCode = null
+        this.parity = 0
+        this.active = true
+        this.canvas = this.$refs.canvas.getContext('2d')
+        const facingMode = this.useBackCamera ? { exact: 'environment' } : 'user'
+        const handleSuccess = (stream) => {
+          if (this.$refs.video.srcObject !== undefined) {
+            this.$refs.video.srcObject = stream
           } else if (window.videoEl.mozSrcObject !== undefined) {
-            this.$refs.video.mozSrcObject = stream;
+            this.$refs.video.mozSrcObject = stream
           } else if (window.URL.createObjectURL) {
-            this.$refs.video.src = window.URL.createObjectURL(stream);
+            this.$refs.video.src = window.URL.createObjectURL(stream)
           } else if (window.webkitURL) {
-            this.$refs.video.src = window.webkitURL.createObjectURL(stream);
+            this.$refs.video.src = window.webkitURL.createObjectURL(stream)
           } else {
-            this.$refs.video.src = stream;
+            this.$refs.video.src = stream
           }
-          this.$refs.video.playsInline = true;
-          const playPromise = this.$refs.video.play();
-          playPromise.catch(() => (this.showPlay = true));
-          playPromise.then(this.run);
-        };
+          this.$refs.video.playsInline = true
+          const playPromise = this.$refs.video.play()
+          playPromise.catch(() => (this.showPlay = true))
+          playPromise.then(this.run)
+        }
         navigator.mediaDevices
-          .getUserMedia({ video: { facingMode, width: 1280, height: 720 } })
+          .getUserMedia({
+            video: {
+              facingMode: { exact: 'environment' },
+              width: this.videoWH.width,
+              height: this.videoWH.height,
+            },
+          })
           .then(handleSuccess)
           .catch(() => {
             navigator.mediaDevices
               .getUserMedia({ video: true })
               .then(handleSuccess)
-              .catch(error => {
-                this.$emit("error-captured", error);
-              });
-          });
+              .catch((error) => {
+                this.$emit('error-captured', error)
+              })
+          })
       }
     },
-    run () {
+    run() {
       if (this.active) {
-        requestAnimationFrame(this.tick);
+        requestAnimationFrame(this.tick)
       }
     },
-    found (code) {
+    found(code) {
       if (this.previousCode !== code) {
-        this.previousCode = code;
+        this.previousCode = code
       } else if (this.previousCode === code) {
-        this.parity += 1;
+        this.parity += 1
       }
       if (this.parity > 2) {
-        this.active = this.stopOnScanned ? false : true;
-        this.parity = 0;
-        this.$emit("code-scanned", code);
+        this.active = this.stopOnScanned ? false : true
+        this.parity = 0
+        this.$emit('code-scanned', code)
       }
     },
     // 完全停止
-    fullStop () {
+    fullStop() {
       if (this.$refs.video && this.$refs.video.srcObject) {
-        this.$refs.video.srcObject.getTracks().forEach(t => t.stop());
+        this.$refs.video.srcObject.getTracks().forEach((t) => t.stop())
       }
-    }
+    },
   },
-  mounted () {
-    this.setup();
+  mounted() {
+    this.setup()
   },
-  beforeDestroy () {
-    this.fullStop();
-  }
+  beforeDestroy() {
+    this.fullStop()
+  },
 }
 </script>
 
@@ -245,7 +261,7 @@ export default {
 .scaner .banner .text {
   padding: 0;
   margin: 0;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 12px;
   text-align: justify;
   text-align-last: left;
@@ -264,22 +280,22 @@ export default {
   height: 220px;
   width: 220px;
   position: absolute;
-  top:50%;
-  left:50%;
-  -webkit-transform: translate(-50%,-50%);
-  -moz-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  -o-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  border: .5px solid #999999;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: 0.5px solid #999999;
   z-index: 1111;
 }
 .scaner .cover .line {
   width: 200px;
   height: 1px;
   margin-left: 10px;
-  background: #5F68E8;
-  background: linear-gradient(to right, transparent, #5F68E8, #0165FF, #5F68E8, transparent);
+  background: #5f68e8;
+  background: linear-gradient(to right, transparent, #5f68e8, #0165ff, #5f68e8, transparent);
   position: absolute;
   -webkit-animation: scan 1.75s infinite linear;
   -moz-animation: scan 1.75s infinite linear;
@@ -301,54 +317,94 @@ export default {
 }
 .scaner .cover .square.top {
   top: 0;
-  border-top: 1px solid #5F68E8;
+  border-top: 1px solid #5f68e8;
 }
 .scaner .cover .square.left {
   left: 0;
-  border-left: 1px solid #5F68E8;
+  border-left: 1px solid #5f68e8;
 }
 .scaner .cover .square.bottom {
   bottom: 0;
-  border-bottom: 1px solid #5F68E8;
+  border-bottom: 1px solid #5f68e8;
 }
 .scaner .cover .square.right {
- right: 0;
-  border-right: 1px solid #5F68E8;
+  right: 0;
+  border-right: 1px solid #5f68e8;
 }
 .scaner .cover .tips {
   position: absolute;
   bottom: -48px;
   width: 100%;
   font-size: 14px;
-  color: #FFFFFF;
+  color: #ffffff;
   opacity: 0.8;
 }
 @-webkit-keyframes scan {
-  0% {top: 0}
-  25% {top: 50px}
-  50% {top: 100px}
-  75% {top: 150px}
-  100% {top: 200px}
+  0% {
+    top: 0;
+  }
+  25% {
+    top: 50px;
+  }
+  50% {
+    top: 100px;
+  }
+  75% {
+    top: 150px;
+  }
+  100% {
+    top: 200px;
+  }
 }
 @-moz-keyframes scan {
-  0% {top: 0}
-  25% {top: 50px}
-  50% {top: 100px}
-  75% {top: 150px}
-  100% {top: 200px}
+  0% {
+    top: 0;
+  }
+  25% {
+    top: 50px;
+  }
+  50% {
+    top: 100px;
+  }
+  75% {
+    top: 150px;
+  }
+  100% {
+    top: 200px;
+  }
 }
 @-o-keyframes scan {
-  0% {top: 0}
-  25% {top: 50px}
-  50% {top: 100px}
-  75% {top: 150px}
-  100% {top: 200px}
+  0% {
+    top: 0;
+  }
+  25% {
+    top: 50px;
+  }
+  50% {
+    top: 100px;
+  }
+  75% {
+    top: 150px;
+  }
+  100% {
+    top: 200px;
+  }
 }
 @keyframes scan {
-  0% {top: 0}
-  25% {top: 50px}
-  50% {top: 100px}
-  75% {top: 150px}
-  100% {top: 200px}
+  0% {
+    top: 0;
+  }
+  25% {
+    top: 50px;
+  }
+  50% {
+    top: 100px;
+  }
+  75% {
+    top: 150px;
+  }
+  100% {
+    top: 200px;
+  }
 }
 </style>
