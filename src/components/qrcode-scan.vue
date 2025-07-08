@@ -93,8 +93,8 @@ const initCamera = async () => {
         audio: true,
         video: {
           facingMode: cameraType.value,
-          width: { ideal: 640 },
-          height: { ideal: 375 },
+          width: { ideal: 375 },
+          height: { ideal: 640 },
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
