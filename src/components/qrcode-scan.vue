@@ -88,7 +88,7 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
+        audio: false,
         video: {
           facingMode: cameraType.value,
           width: 1280,
@@ -133,14 +133,14 @@ onMounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  height: 90%;
+  height: 100%;
   pointer-events: none;
 }
 
 .scan-frame {
   position: relative;
   border: 2px solid #07c160;
-  height: 80%;
+  height: 90%;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
@@ -202,7 +202,7 @@ onMounted(() => {
 }
 
 .tip-text {
-  color: white;
+  color: #000;
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
