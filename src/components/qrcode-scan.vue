@@ -88,7 +88,7 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
+        audio: true,
         video: {
           facingMode: cameraType.value,
           width: {
