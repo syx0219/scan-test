@@ -103,7 +103,6 @@ export default {
   methods: {
     // 画线
     drawLine(begin, end) {
-      alert('进来了')
       this.canvas.beginPath()
       this.canvas.moveTo(begin.x, begin.y)
       this.canvas.lineTo(end.x, end.y)
@@ -137,6 +136,7 @@ export default {
           this.$refs.canvas.width,
           this.$refs.canvas.height
         )
+        alert(imageData)
         let code = false
         try {
           code = jsQR(imageData.data, imageData.width, imageData.height)
@@ -144,8 +144,8 @@ export default {
           alert(e)
           console.error(e)
         }
+        // alert(code)
         if (code) {
-          alert(code)
           this.drawBox(code.location)
           this.found(code.data)
         }
