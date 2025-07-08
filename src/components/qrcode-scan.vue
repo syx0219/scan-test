@@ -92,14 +92,14 @@ const initCamera = async () => {
         video: {
           facingMode: cameraType.value,
           width: {
-            min: 640,
-            ideal: 1280,
+            min: 480,
+            ideal: 1080,
             max: 1920,
           },
           height: {
-            min: 480,
+            min: 640,
             ideal: 720,
-            max: 1080,
+            max: 1280,
           },
         },
       })
