@@ -91,8 +91,16 @@ const initCamera = async () => {
         audio: false,
         video: {
           facingMode: cameraType.value,
-          width: 640,
-          height: 480,
+          width: {
+            min: 640,
+            ideal: 1280,
+            max: 1920,
+          },
+          height: {
+            min: 480,
+            ideal: 720,
+            max: 1080,
+          },
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
@@ -206,7 +214,7 @@ onMounted(() => {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
+  /* text-shadow: 0 0 5px rgba(7, 193, 96, 0.5); */
 }
 
 .permission-alert {
