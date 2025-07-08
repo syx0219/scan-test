@@ -136,7 +136,7 @@ export default {
           this.$refs.canvas.width,
           this.$refs.canvas.height
         )
-        alert(imageData)
+        alert(JSON.stringify(imageData))
         let code = false
         try {
           code = jsQR(imageData.data, imageData.width, imageData.height)
