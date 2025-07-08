@@ -38,6 +38,8 @@ const windowHeight = 700
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
+  width: Math.max(windowWidth, windowHeight) - 120,
+  height: Math.min(windowWidth, windowHeight),
 }))
 // 扫码结果处理
 const onDetect = (result) => {
