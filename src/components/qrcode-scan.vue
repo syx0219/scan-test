@@ -36,8 +36,8 @@ const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
-  width: { ideal: 1280 },  // 添加理想宽度
-  height: { ideal: 720 },  // 添加理想高度
+  width: { ideal: 640 }, // 添加理想宽度
+  height: { ideal: 375 }, // 添加理想高度
 }))
 // 扫码结果处理
 const onDetect = (result) => {
