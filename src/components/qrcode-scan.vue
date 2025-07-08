@@ -36,8 +36,6 @@ const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
-  width: 200, // 添加理想宽度
-  height: 300, // 添加理想高度
 }))
 // 扫码结果处理
 const onDetect = (result) => {
@@ -93,8 +91,6 @@ const initCamera = async () => {
         audio: true,
         video: {
           facingMode: cameraType.value,
-          width: 200,
-          height: 300,
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
@@ -204,11 +200,11 @@ onMounted(() => {
 }
 
 .tip-text {
-  color: white;
+  color: #000;
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
+  /* text-shadow: 0 0 5px rgba(7, 193, 96, 0.5); */
 }
 
 .permission-alert {
