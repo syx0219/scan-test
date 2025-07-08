@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 核心扫码组件 -->
     <qrcode-stream
       v-if="isCameraActive"
       :constraints="cameraConfig"
@@ -10,7 +9,7 @@
       <!-- 扫码界面遮罩 -->
       <div class="overlay">
         <div class="scan-frame"></div>
-        <div class="tip-text">对准二维码到框内</div>
+        <div class="tip-text">{{ $t('scaner.notifyText') }}</div>
       </div>
     </qrcode-stream>
     <!-- 权限提示 -->
@@ -19,52 +18,55 @@
       <p>需要摄像头权限才能扫码</p>
       <van-button type="primary" @click="retryCamera">重新授权</van-button>
     </div>
-    <!-- 操作按钮组 -->
-    <div class="button-group">
-      <!-- 切换摄像头按钮 -->
-      <!-- <van-button class="switch-camera-btn" type="primary" round @click="switchCamera">
-        {{ cameraType === 'user' ? '后置摄像头' : '前置摄像头' }}
-      </van-button> -->
-      <!-- 关闭按钮 -->
-      <!-- <van-button class="close-btn" type="danger" round @click="handleClose">关闭</van-button> -->
-    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
+<script setup name="qrcode-scan">
+import { ref, computed, onMounted, defineEmits, getCurrentInstance } from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
+const { $t } = getCurrentInstance().proxy
 const isCameraActive = ref(false)
 const showPermissionAlert = ref(false)
 const cameraType = ref('environment') // 'user' 前置 | 'environment' 后置
 const isScanning = ref(true) // 控制是否继续扫描
 let successTimer = ref()
 let errorTimer = ref()
+const errorMessage = ref('')
+const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
 }))
-// 切换摄像头
-const switchCamera = () => {
-  cameraType.value = cameraType.value === 'user' ? 'environment' : 'user'
-  // 重新初始化摄像头
-  initCamera()
-}
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
   const decodedText = result[0]?.rawValue
-  alert(decodedText)
+  // alert(decodedText)
+  emit('code-scanned', decodedText)
 }
 // 摄像头错误处理
 const onCameraError = async (error) => {
   console.error('摄像头错误:', error)
-  if (error.name === 'NotAllowedError') {
-    showPermissionAlert.value = true
-  } else if (error.name === 'NotFoundError') {
-    // console.log("未找到摄像头", "未找到摄像头");
-    showToast('未找到摄像头')
+  switch (error.name) {
+    case 'NotAllowedError':
+      errorMessage.value = $t('home.allowedError')
+      break
+    case 'NotFoundError':
+      errorMessage.value = $t('home.foundError')
+      break
+    case 'NotSupportedError':
+      errorMessage.value = $t('home.supportedError')
+      break
+    case 'NotReadableError':
+      errorMessage.value = $t('home.readableError')
+      break
+    case 'OverconstrainedError':
+      errorMessage.value = $t('home.constrainedError')
+      break
+    default:
+      errorMessage.value = $t('home.unknownError') + error.message
   }
+  showFailToast(errorMessage.value)
 }
 // 重新尝试授权
 const retryCamera = () => {
@@ -108,12 +110,6 @@ const initCamera = async () => {
   } catch (error) {
     await onCameraError(error)
   }
-}
-// 关闭扫码
-const handleClose = () => {
-  isScanning.value = false
-  isCameraActive.value = false
-  router.go(-1)
 }
 onMounted(() => {
   initCamera()
@@ -211,21 +207,6 @@ onMounted(() => {
   text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
 }
 
-.button-group {
-  position: fixed;
-  bottom: 30px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  z-index: 10000;
-}
-
-.switch-camera-btn,
-.close-btn {
-  min-width: 120px;
-}
 .permission-alert {
   position: absolute;
   top: 50%;
