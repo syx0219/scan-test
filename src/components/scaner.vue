@@ -136,18 +136,16 @@ export default {
           this.$refs.canvas.width,
           this.$refs.canvas.height
         )
-        alert(JSON.stringify(imageData))
         let code = false
         try {
           code = jsQR(imageData.data, imageData.width, imageData.height)
+          if (code) {
+            this.drawBox(code.location)
+            this.found(code.data)
+          }
         } catch (e) {
           alert(e)
           console.error(e)
-        }
-        // alert(code)
-        if (code) {
-          this.drawBox(code.location)
-          this.found(code.data)
         }
       }
       this.run()

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <!-- <RouterLink to="/other">other</RouterLink> -->
+    <RouterLink to="/other">other</RouterLink>
     <RouterView />
   </div>
 </template>
