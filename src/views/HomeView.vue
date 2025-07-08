@@ -21,13 +21,7 @@
       @confirm="toSubmit"
     >
       <div class="popup-content">
-        <div class="popup-text" v-if="form !== {}">
-          <p>DEV_EUI: {{ form.dev_eui }}</p>
-          <p>APP_EUI: {{ form.app_eui }}</p>
-          <p>APP_KEY: {{ form.app_key }}</p>
-          <p>SN: {{ form.sn }}</p>
-        </div>
-        <div class="popup-error" v-if="errorMessage !== ''">{{ errorMessage }}</div>
+        <div class="popup-text" v-if="text !== ''">{{ text }}</div>
       </div>
     </van-dialog>
   </div>
@@ -38,11 +32,12 @@ import { onMounted, ref, getCurrentInstance } from 'vue'
 import QrcodeStream from '@/components/qrcode-scan.vue'
 import { showToast } from 'vant'
 const { $t } = getCurrentInstance().proxy
-const errorMessage = ref('')
 const show = ref(false)
 const form = ref({})
+const text = ref('')
 const codeScanned = (code) => {
-  showToast(code)
+  // showToast(code)
+  text.value = code
   // var arr = code.split('"').filter((item) => item !== '')
   // arr.map((item) => {
   //   let key = item.split(':')
@@ -50,34 +45,12 @@ const codeScanned = (code) => {
   //     form.value[key[0]] = key[1]
   //   }
   // })
-  // show.value = true
+  show.value = true
 }
 const toSubmit = () => {
   show.value = false
   console.log(form.value)
 }
-// const errorCaptured = (error) => {
-//   switch (error.name) {
-//     case 'NotAllowedError':
-//       errorMessage.value = $t('home.allowedError')
-//       break
-//     case 'NotFoundError':
-//       errorMessage.value = $t('home.foundError')
-//       break
-//     case 'NotSupportedError':
-//       errorMessage.value = $t('home.supportedError')
-//       break
-//     case 'NotReadableError':
-//       errorMessage.value = $t('home.readableError')
-//       break
-//     case 'OverconstrainedError':
-//       errorMessage.value = $t('home.constrainedError')
-//       break
-//     default:
-//       errorMessage.value = $t('home.unknownError') + error.message
-//   }
-//   showFailToast(errorMessage.value)
-// }
 
 // onMounted(() => {
 //   var str = navigator.userAgent.toLowerCase()
