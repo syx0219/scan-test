@@ -33,6 +33,8 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
+const windowWidth = 375
+const windowHeight = 700
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
@@ -88,9 +90,10 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
         video: {
           facingMode: cameraType.value,
+          width: Math.max(windowWidth, windowHeight) - 120,
+          height: Math.min(windowWidth, windowHeight),
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
