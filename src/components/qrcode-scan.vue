@@ -33,13 +33,11 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
-const windowWidth = 375
-const windowHeight = 700
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
-  width: 600,
-  height: 600,
+  width: 500, // 添加理想宽度
+  height: 750, // 添加理想高度
 }))
 // 扫码结果处理
 const onDetect = (result) => {
@@ -94,8 +92,8 @@ const initCamera = async () => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraType.value,
-          width: 600,
-          height: 600,
+          width: 500, // 添加理想宽度
+          height: 750, // 添加理想高度
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
@@ -209,7 +207,7 @@ onMounted(() => {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  /* text-shadow: 0 0 5px rgba(7, 193, 96, 0.5); */
+  text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
 }
 
 .permission-alert {
