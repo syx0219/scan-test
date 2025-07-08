@@ -36,8 +36,8 @@ const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
-  width: { ideal: 375 }, // 添加理想宽度
-  height: { ideal: 640 }, // 添加理想高度
+  width: { ideal: 1080 }, // 添加理想宽度
+  height: { ideal: 720 }, // 添加理想高度
 }))
 // 扫码结果处理
 const onDetect = (result) => {
@@ -93,8 +93,8 @@ const initCamera = async () => {
         audio: true,
         video: {
           facingMode: cameraType.value,
-          width: { ideal: 375 },
-          height: { ideal: 640 },
+          width: { ideal: 1080 },
+          height: { ideal: 720 },
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
