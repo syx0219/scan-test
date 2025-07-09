@@ -36,8 +36,6 @@ const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
-  width: 500, // 添加理想宽度
-  height: 750, // 添加理想高度
 }))
 // 扫码结果处理
 const onDetect = (result) => {
@@ -90,16 +88,13 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: cameraType.value,
-          width: 500, // 添加理想宽度
-          height: 750, // 添加理想高度
-        },
+        video: { facingMode: cameraType.value },
       })
       //停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
       // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
+      alert(devices)
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
     }
     // console.log("可用摄像头:", videoDevices);
