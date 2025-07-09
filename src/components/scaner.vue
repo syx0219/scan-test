@@ -162,6 +162,10 @@ export default {
         this.parity = 0
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
+        navigator.mediaDevices.enumerateDevices().then((devices) => {
+          alert(devices)
+        })
+        // let videoDevices = devices.then(res).filter((device) => device.kind === 'videoinput')
         const handleSuccess = (stream) => {
           if (this.$refs.video.srcObject !== undefined) {
             this.$refs.video.srcObject = stream
@@ -183,8 +187,7 @@ export default {
           .getUserMedia({
             audio: false,
             video: {
-              facingMode: 'environment',
-              deviceId: { exact: 'camera2 2,facing back' },
+              facingMode: { exact: 'environment' },
             },
           })
           .then(handleSuccess)
