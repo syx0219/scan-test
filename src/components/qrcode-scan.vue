@@ -34,10 +34,10 @@ let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
-const cameraConfig = computed(() => ({
-  facingMode: cameraType.value,
-  deviceId: { exact: 'camera2 3,facing back' },
-}))
+const cameraConfig = ref({
+  facingMode: 'environment',
+  deviceId: 'camera2 3,facing back',
+})
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
@@ -85,7 +85,7 @@ const initCamera = async () => {
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
-    alert(JSON.stringify(devices))
+    // alert(JSON.stringify(devices))
     if (!hasPermission) {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
