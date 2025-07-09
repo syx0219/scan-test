@@ -183,8 +183,8 @@ export default {
           .getUserMedia({
             audio: false,
             video: {
-              facingMode: { exact: 'environment' },
-              deviceId: { exact: 'camera2 3,facing back' },
+              facingMode: 'environment',
+              deviceId: { exact: 'camera2 2,facing back' },
             },
           })
           .then(handleSuccess)
