@@ -94,8 +94,8 @@ const initCamera = async () => {
       stream.getTracks().forEach((track) => track.stop())
       // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
-      alert(devices)
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
+      alert(videoDevices)
     }
     // console.log("可用摄像头:", videoDevices);
     if (videoDevices.length === 0) {
