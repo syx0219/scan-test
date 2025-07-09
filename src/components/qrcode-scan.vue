@@ -33,24 +33,11 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
-const validDeviceId = ref('')
 // 计算摄像头配置
-const cameraConfig = computed(() => {
-  const constraints = {
-    facingMode: cameraType.value,
-  }
-
-  // 如果已知有效的 deviceId，优先使用
-  if (validDeviceId.value) {
-    constraints.deviceId = { exact: validDeviceId.value }
-  } else {
-    // 否则尝试使用预设的默认值
-    constraints.deviceId = { exact: 'camera2 3,facing back' }
-  }
-
-  return constraints
-})
-
+const cameraConfig = ref({})
+// const cameraConfig = computed(() => ({
+//   facingMode: cameraType.value,
+// }))
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
@@ -96,14 +83,18 @@ const initCamera = async () => {
            console.log(videoDevices[0].deviceId !== '','videoDevices');*/
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
+    cameraConfig.value = {
+      facingMode: cameraType.value,
+      deviceId: 'camera2 3,facing back',
+    }
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
-
+    // alert(videoDevices)
     if (!hasPermission) {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: cameraType.value, deviceId: { exact: 'camera2 3,facing back' } },
+        video: { facingMode: cameraType.value },
       })
       //停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
