@@ -36,6 +36,7 @@ const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
 const cameraConfig = computed(() => ({
   facingMode: cameraType.value,
+  deviceId: { exact: 'camera2 3,facing back' },
 }))
 // 扫码结果处理
 const onDetect = (result) => {
@@ -84,12 +85,12 @@ const initCamera = async () => {
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
-    alert(devices)
+    alert(JSON.stringify(devices))
     if (!hasPermission) {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: cameraType.value },
+        video: { facingMode: cameraType.value, deviceId: { exact: 'camera2 3,facing back' } },
       })
       //停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
