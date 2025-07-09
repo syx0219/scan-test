@@ -84,6 +84,7 @@ const initCamera = async () => {
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
+    alert(devices)
     if (!hasPermission) {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
@@ -95,7 +96,6 @@ const initCamera = async () => {
       // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
-      alert(videoDevices)
     }
     // console.log("可用摄像头:", videoDevices);
     if (videoDevices.length === 0) {
