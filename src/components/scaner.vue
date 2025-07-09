@@ -184,8 +184,7 @@ export default {
             audio: false,
             video: {
               facingMode: { exact: 'environment' },
-              width: this.videoWH.height,
-              height: this.videoWH.width,
+              deviceId: { exact: 'camera2 3,facing back' },
             },
           })
           .then(handleSuccess)
