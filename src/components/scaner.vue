@@ -78,6 +78,7 @@ export default {
       showBanner: true,
       containerWidth: null,
       active: false,
+      constraints: null,
     }
   },
   computed: {
@@ -163,7 +164,12 @@ export default {
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
         navigator.mediaDevices.enumerateDevices().then((devices) => {
-          alert(devices)
+          alert(JSON.stringify(devices))
+          this.constraints = {
+            video: {
+              deviceId: 'camera2 3,facing back',
+            },
+          }
         })
         // let videoDevices = devices.then(res).filter((device) => device.kind === 'videoinput')
         const handleSuccess = (stream) => {
@@ -184,12 +190,7 @@ export default {
           playPromise.then(this.run)
         }
         navigator.mediaDevices
-          .getUserMedia({
-            audio: false,
-            video: {
-              facingMode: { exact: 'environment' },
-            },
-          })
+          .getUserMedia(this.constraints)
           .then(handleSuccess)
           .catch(() => {
             navigator.mediaDevices
