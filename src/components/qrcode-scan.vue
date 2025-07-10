@@ -149,7 +149,7 @@ onMounted(() => {
 .scan-frame {
   position: relative;
   border: 2px solid #07c160;
-  height: 80%;
+  height: 60%;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
@@ -211,9 +211,8 @@ onMounted(() => {
 }
 
 .tip-text {
-  color: #000;
+  color: #fff;
   text-align: center;
-  margin-top: 20px;
   font-size: 14px;
   text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
 }
