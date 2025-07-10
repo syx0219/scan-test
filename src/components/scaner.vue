@@ -167,7 +167,8 @@ export default {
           alert(JSON.stringify(devices))
           this.constraints = {
             video: {
-              deviceId: 'camera2 3,facing back',
+              facingMode: 'environment',
+              deviceId: 'camera2 4,facing back',
             },
           }
         })
