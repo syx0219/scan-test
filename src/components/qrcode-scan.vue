@@ -34,9 +34,10 @@ let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
-const cameraConfig = computed(() => ({
-  facingMode: cameraType.value,
-}))
+// const cameraConfig = computed(() => ({
+//   facingMode: cameraType.value,
+// }))
+const cameraConfig = ref(null)
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
@@ -78,10 +79,23 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
+    if (deviceArr.length === 0) {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+      }
+    } else {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+        deviceId: deviceArr[0].deviceId,
+      }
+    }
+
     /*    console.log(videoDevices.length > 0,'videoDevices');
            console.log(videoDevices[0].deviceId !== '','videoDevices');*/
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
+
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
     if (!hasPermission) {

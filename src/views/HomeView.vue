@@ -5,14 +5,14 @@
     </div>
     <h1 class="title">{{ $t('home.title') }}</h1>
     <div class="scroll-container">
-      <!-- <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan> -->
-      <Scaner
+      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
+      <!-- <Scaner
         v-on:code-scanned="codeScanned"
         v-on:error-captured="errorCaptured"
         :stop-on-scanned="true"
         :draw-on-found="true"
         :responsive="false"
-      />
+      /> -->
     </div>
     <van-dialog
       v-model:show="show"
@@ -28,8 +28,8 @@
 </template>
 <script setup>
 import { onMounted, ref, getCurrentInstance } from 'vue'
-import Scaner from '@/components/scaner.vue'
-// import QrcodeStream from '@/components/qrcode-scan.vue'
+// import Scaner from '@/components/scaner.vue'
+import QrcodeStream from '@/components/qrcode-scan.vue'
 import { showToast } from 'vant'
 const { $t } = getCurrentInstance().proxy
 const show = ref(false)
