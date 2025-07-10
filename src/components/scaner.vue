@@ -166,12 +166,14 @@ export default {
         navigator.mediaDevices.enumerateDevices().then((devices) => {
           // alert(JSON.stringify(devices))
           let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-          const deviceIds = videoDevices.filter((device) => device.label === 'camera2 4,facing back')[0].deviceId
+          const deviceIds = videoDevices.filter(
+            (device) => device.label === 'camera2 4,facing back'
+          )[0].deviceId
           alert(deviceIds)
           this.constraints = {
             video: {
-              facingMode: 'environment',
-              deviceId: deviceIds,
+              facingMode: { exact: 'environment' },
+              deviceId: { exact: deviceIds },
             },
           }
         })
