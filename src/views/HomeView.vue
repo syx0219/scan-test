@@ -52,34 +52,34 @@ const toSubmit = () => {
   console.log(form.value)
 }
 
-const errorCaptured = (error) => {
-  switch (error.name) {
-    case 'NotAllowedError':
-      errorMessage.value = $t('home.allowedError')
-      break
-    case 'NotFoundError':
-      errorMessage.value = $t('home.foundError')
-      break
-    case 'NotSupportedError':
-      errorMessage.value = $t('home.supportedError')
-      break
-    case 'NotReadableError':
-      errorMessage.value = $t('home.readableError')
-      break
-    case 'OverconstrainedError':
-      errorMessage.value = $t('home.constrainedError')
-      break
-    default:
-      errorMessage.value = $t('home.unknownError') + error.message
-  }
-  showFailToast(errorMessage.value)
-}
+// const errorCaptured = (error) => {
+//   switch (error.name) {
+//     case 'NotAllowedError':
+//       errorMessage.value = $t('home.allowedError')
+//       break
+//     case 'NotFoundError':
+//       errorMessage.value = $t('home.foundError')
+//       break
+//     case 'NotSupportedError':
+//       errorMessage.value = $t('home.supportedError')
+//       break
+//     case 'NotReadableError':
+//       errorMessage.value = $t('home.readableError')
+//       break
+//     case 'OverconstrainedError':
+//       errorMessage.value = $t('home.constrainedError')
+//       break
+//     default:
+//       errorMessage.value = $t('home.unknownError') + error.message
+//   }
+//   showFailToast(errorMessage.value)
+// }
 onMounted(() => {
-  var str = navigator.userAgent.toLowerCase()
-  var ver = str.match(/cpu iphone os (.*?) like mac os/)
-  if (ver && ver[1].replace(/_/g, '.') < '10.3.3') {
-    showFailToast($t('home.failText'))
-  }
+  // var str = navigator.userAgent.toLowerCase()
+  // var ver = str.match(/cpu iphone os (.*?) like mac os/)
+  // if (ver && ver[1].replace(/_/g, '.') < '10.3.3') {
+  //   showFailToast($t('home.failText'))
+  // }
 })
 </script>
 <style scoped>
@@ -112,12 +112,11 @@ onMounted(() => {
   height: 100%;
 }
 .popup-content {
-  padding: 0 12px;
+  padding: 12px;
 }
-.popup-content p {
+.popup-content .popup-text {
   word-break: break-all;
   font-size: 16px;
   line-height: 25px;
-  margin: 5px 0;
 }
 </style>

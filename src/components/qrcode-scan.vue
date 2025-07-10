@@ -9,14 +9,14 @@
       <!-- 扫码界面遮罩 -->
       <div class="overlay">
         <div class="scan-frame"></div>
-        <div class="tip-text">{{ $t('scaner.notifyText') }}</div>
+        <div class="tip-text">{{ $t('scaner.tips') }}</div>
       </div>
     </qrcode-stream>
     <!-- 权限提示 -->
     <div v-if="showPermissionAlert" class="permission-alert">
       <van-icon name="warning" size="24px" />
-      <p>需要摄像头权限才能扫码</p>
-      <van-button type="primary" @click="retryCamera">重新授权</van-button>
+      <p>{{ $t('scaner.notifyText') }}</p>
+      <van-button type="primary" @click="retryCamera">{{ $t('scaner.startBtn') }}</van-button>
     </div>
   </div>
 </template>
@@ -34,15 +34,11 @@ let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
 // 计算摄像头配置
-// const cameraConfig = computed(() => ({
-//   facingMode: cameraType.value,
-// }))
 const cameraConfig = ref(null)
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
   const decodedText = result[0]?.rawValue
-  // alert(decodedText)
   emit('code-scanned', decodedText)
 }
 // 摄像头错误处理
@@ -79,7 +75,7 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 2, facing back')
+    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
     if (deviceArr.length === 0) {
       cameraConfig.value = {
         facingMode: cameraType.value,
@@ -90,7 +86,6 @@ const initCamera = async () => {
         deviceId: deviceArr[0].deviceId,
       }
     }
-
     /*    console.log(videoDevices.length > 0,'videoDevices');
            console.log(videoDevices[0].deviceId !== '','videoDevices');*/
     // 权限检测逻辑（通过 deviceId 是否为空判断）
@@ -141,14 +136,14 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 80%;
   height: 80%;
   pointer-events: none;
 }
 
 .scan-frame {
   position: relative;
-  border: 2px solid #07c160;
+  border: 2px solid #00a0f0;
   height: 70%;
   margin: 20% auto;
   border-radius: 4px;
@@ -164,9 +159,9 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(to right, transparent, #07c160, transparent);
+  background: linear-gradient(to right, transparent, #00a0f0, transparent);
   animation: scan-line 2s linear infinite;
-  box-shadow: 0 0 10px #07c160;
+  box-shadow: 0 0 10px #00a0f0;
 }
 
 /* 四个角的装饰 */
@@ -178,7 +173,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   border: 2px solid transparent;
-  border-image: linear-gradient(45deg, #07c160, transparent, #07c160) 1;
+  border-image: linear-gradient(45deg, #00a0f0, transparent, #00a0f0) 1;
   animation: border-glow 2s linear infinite;
 }
 
@@ -200,13 +195,13 @@ onMounted(() => {
 /* 边框发光动画 */
 @keyframes border-glow {
   0% {
-    box-shadow: 0 0 5px #07c160;
+    box-shadow: 0 0 5px #00a0f0;
   }
   50% {
-    box-shadow: 0 0 20px #07c160;
+    box-shadow: 0 0 20px #00a0f0;
   }
   100% {
-    box-shadow: 0 0 5px #07c160;
+    box-shadow: 0 0 5px #00a0f0;
   }
 }
 
@@ -214,7 +209,7 @@ onMounted(() => {
   color: #fff;
   text-align: center;
   font-size: 14px;
-  text-shadow: 0 0 5px rgba(7, 193, 96, 0.5);
+  text-shadow: 0 0 5px rgba(0, 160, 240, 0.5);
 }
 
 .permission-alert {
