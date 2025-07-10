@@ -182,32 +182,32 @@ export default {
           playPromise.catch(() => (this.showPlay = true))
           playPromise.then(this.run)
         }
-        alert(this.constraints)
+        // alert(this.constraints)
         navigator.mediaDevices.enumerateDevices().then((devices) => {
           // alert(JSON.stringify(devices))
           let videoDevices = devices.filter((device) => device.kind === 'videoinput')
           const deviceArr = videoDevices.filter(
             (device) => device.label === 'camera2 4, facing back'
           )
-          alert(JSON.stringify(deviceArr))
+          // alert(JSON.stringify(deviceArr))
           this.constraints = {
             video: {
               facingMode: { exact: 'environment' },
               deviceId: { exact: deviceArr[0].deviceId },
             },
           }
+          navigator.mediaDevices
+            .getUserMedia(this.constraints)
+            .then(handleSuccess)
+            .catch(() => {
+              navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then(handleSuccess)
+                .catch((error) => {
+                  this.$emit('error-captured', error)
+                })
+            })
         })
-        navigator.mediaDevices
-          .getUserMedia(this.constraints)
-          .then(handleSuccess)
-          .catch(() => {
-            navigator.mediaDevices
-              .getUserMedia({ video: true })
-              .then(handleSuccess)
-              .catch((error) => {
-                this.$emit('error-captured', error)
-              })
-          })
       }
     },
     run() {
