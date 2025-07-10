@@ -163,20 +163,7 @@ export default {
         this.parity = 0
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-          // alert(JSON.stringify(devices))
-          let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-          const deviceIds = videoDevices.filter(
-            (device) => device.label === 'camera2 4,facing back'
-          )[0].deviceId
-          alert(deviceIds)
-          this.constraints = {
-            video: {
-              facingMode: { exact: 'environment' },
-              deviceId: { exact: deviceIds },
-            },
-          }
-        })
+
         //
         const handleSuccess = (stream) => {
           if (this.$refs.video.srcObject !== undefined) {
@@ -195,17 +182,32 @@ export default {
           playPromise.catch(() => (this.showPlay = true))
           playPromise.then(this.run)
         }
-        navigator.mediaDevices
-          .getUserMedia(this.constraints)
-          .then(handleSuccess)
-          .catch(() => {
-            navigator.mediaDevices
-              .getUserMedia({ video: true })
-              .then(handleSuccess)
-              .catch((error) => {
-                this.$emit('error-captured', error)
-              })
-          })
+        navigator.mediaDevices.enumerateDevices().then((devices) => {
+          // alert(JSON.stringify(devices))
+          let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+          const deviceIds = videoDevices.filter(
+            (device) => device.label === 'camera2 4,facing back'
+          )[0].deviceId
+
+          this.constraints = {
+            video: {
+              facingMode: { exact: 'environment' },
+              deviceId: { exact: deviceIds },
+            },
+          }
+          navigator.mediaDevices
+            .getUserMedia(this.constraints)
+            .then(handleSuccess)
+            .catch(() => {
+              navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then(handleSuccess)
+                .catch((error) => {
+                  this.$emit('error-captured', error)
+                })
+            })
+        })
+        // alert(this.constraints)
       }
     },
     run() {
