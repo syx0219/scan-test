@@ -187,7 +187,7 @@ export default {
           // alert(JSON.stringify(devices))
           let videoDevices = devices.filter((device) => device.kind === 'videoinput')
           const deviceArr = videoDevices.filter(
-            (device) => device.label === 'camera2 4, facing back'
+            (device) => device.label === 'camera2 3, facing back'
           )
           // alert(JSON.stringify(deviceArr))
           this.constraints = {
