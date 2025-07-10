@@ -164,7 +164,9 @@ export default {
         this.active = true
         this.canvas = this.$refs.canvas.getContext('2d')
         navigator.mediaDevices.enumerateDevices().then((devices) => {
-          alert(JSON.stringify(devices))
+          // alert(JSON.stringify(devices))
+          let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+          alert(JSON.stringify(videoDevices))
           this.constraints = {
             video: {
               facingMode: 'environment',
@@ -172,7 +174,7 @@ export default {
             },
           }
         })
-        // let videoDevices = devices.then(res).filter((device) => device.kind === 'videoinput')
+        //
         const handleSuccess = (stream) => {
           if (this.$refs.video.srcObject !== undefined) {
             this.$refs.video.srcObject = stream
