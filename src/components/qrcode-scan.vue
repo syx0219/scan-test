@@ -79,7 +79,7 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
+    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 2, facing back')
     if (deviceArr.length === 0) {
       cameraConfig.value = {
         facingMode: cameraType.value,
@@ -141,7 +141,7 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: 50%;
   height: 80%;
   pointer-events: none;
 }
@@ -149,7 +149,7 @@ onMounted(() => {
 .scan-frame {
   position: relative;
   border: 2px solid #07c160;
-  height: 60%;
+  height: 70%;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
