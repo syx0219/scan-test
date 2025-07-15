@@ -43,7 +43,7 @@ const onDetect = (result) => {
 }
 // 摄像头错误处理
 const onCameraError = async (error) => {
-  console.error('摄像头错误:', error)
+  // console.error('摄像头错误:', error)
   switch (error.name) {
     case 'NotAllowedError':
       errorMessage.value = $t('home.allowedError')
@@ -144,7 +144,7 @@ onMounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  height: 80%;
+  height: 100%;
   pointer-events: none;
 }
 
