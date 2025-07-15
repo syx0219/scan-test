@@ -4,9 +4,9 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 // import vueDevTools from 'vite-plugin-vue-devtools'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
-import AutoImport from 'unplugin-auto-import/vite';
-import Components from 'unplugin-vue-components/vite';
-import { VantResolver } from '@vant/auto-import-resolver';
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { VantResolver } from '@vant/auto-import-resolver'
 // https://vite.dev/config/
 export default defineConfig({
   base: '/scan-test/',
@@ -21,33 +21,33 @@ export default defineConfig({
       resolvers: [VantResolver()],
     }),
   ],
-  build:{
-    outDir:'dist',
-    assetsDir:"assets",
-    assetsInlineLimit:0,
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    assetsInlineLimit: 0,
     chunkSizeWarningLimit: 1600,
-    cssCodeSplit:true,
-    sourcemap:false,
-    terserOptions:{
-      compress:{
-        drop_console:true,
-        drop_debugger:true,
-      }
-    },
-    rollupOptions:{
-      input:{
-        main:fileURLToPath(new URL("index.html",import.meta.url)),
+    cssCodeSplit: true,
+    sourcemap: false,
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
       },
-      output:{
-        manualChunks:{
-          vue:["vue"]
-        }
-      }
+    },
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('index.html', import.meta.url)),
+      },
+      output: {
+        manualChunks: {
+          vue: ['vue'],
+        },
+      },
     },
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
@@ -56,13 +56,13 @@ export default defineConfig({
     https: false,
     open: true, //  true 自动打开浏览器自动打开浏览器
     cors: true, // 跨域设置允许
-    strictPort: true,  // 如果端口已占用直接退出
-    // proxy: {
-    //     '/api': {
-    //         target: 'https://tete.elecrow.com', //测试版本
-    //         changeOrigin: true,
-    //         rewrite: (path) => path.replace(/^\/api/, '')
-    //     },
-    // },
-  }
+    strictPort: true, // 如果端口已占用直接退出
+    proxy: {
+      '/api': {
+        target: 'http://192.168.2.78/api', //测试版本
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })

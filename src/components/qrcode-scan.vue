@@ -5,6 +5,7 @@
       :constraints="cameraConfig"
       @detect="onDetect"
       @error="onCameraError"
+      autofocus
     >
       <!-- 扫码界面遮罩 -->
       <div class="overlay">
