@@ -30,14 +30,12 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status == 200) {
-      const user = useUserStore()
+      alert(response.data.code)
       if (response.data.code == 300) {
         ElMessage({
           type: 'error',
           message: response.data.message,
         })
-        user.userInfo = null
-        user.token = ''
         localStorage.removeItem('token')
         return Promise.reject(response.data.message)
       }
