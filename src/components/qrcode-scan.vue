@@ -5,7 +5,6 @@
       :constraints="cameraConfig"
       @detect="onDetect"
       @error="onCameraError"
-      autofocus
     >
       <!-- 扫码界面遮罩 -->
       <div class="overlay">
@@ -80,11 +79,13 @@ const initCamera = async () => {
     if (deviceArr.length === 0) {
       cameraConfig.value = {
         facingMode: cameraType.value,
+        autoFocus: true,
       }
     } else {
       cameraConfig.value = {
         facingMode: cameraType.value,
         deviceId: deviceArr[0].deviceId,
+        autoFocus: true,
       }
     }
     /*    console.log(videoDevices.length > 0,'videoDevices');
