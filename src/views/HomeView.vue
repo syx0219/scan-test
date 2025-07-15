@@ -39,31 +39,25 @@ const text = ref('')
 const codeScanned = (code) => {
   // showToast(code)
   text.value = code
-  var arr = code.split('"').filter((item) => item !== '')
-  arr.map((item) => {
-    let key = item.split(':')
-    alert(JSON.stringify(key))
-    if (key.length > 1) {
-      form.value[key[0]] = key[1]
-    }
-  })
-  // show.value = true
+  show.value = true
   // alert(JSON.stringify(arr))
 }
 const toSubmit = async () => {
   show.value = false
 
-  // try {
-  //   const res = await addTrackers(form.value)
-  //   if (res.code === 200) {
-  //     showToast('添加成功')
-  //     setTimeout(() => {
-  //       $router.push('/')
-  //     }, 1000)
-  //   }
-  // } catch (error) {
-  //   showToast(error.message)
-  // }
+  try {
+    const res = await addTrackers({
+      dev_eui: '70B3D57ED006EC52',
+      app_eui: 'DF565DFDFDFCCCDD',
+      app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+      sn: 'TRAL2252400100001',
+    })
+    if (res.code === 200) {
+      showToast('添加成功')
+    }
+  } catch (error) {
+    showToast(error.message)
+  }
 }
 
 // const errorCaptured = (error) => {
