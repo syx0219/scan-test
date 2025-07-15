@@ -80,8 +80,8 @@ const initCamera = async () => {
     cameraConfig.value = {
       facingMode: cameraType.value,
       autoFocus: true,
-      width: 750,
-      height: 1000,
+      width: 1920,
+      height: 750,
     }
     // }
     // } else {
