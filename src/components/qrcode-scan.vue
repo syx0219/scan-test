@@ -86,8 +86,6 @@ const initCamera = async () => {
         facingMode: cameraType.value,
         deviceId: deviceArr[0].deviceId,
         autoFocus: true,
-        width: 1200,
-        height: 800,
       }
     }
     /*    console.log(videoDevices.length > 0,'videoDevices');
@@ -143,7 +141,7 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: 100%;
   height: 100%;
   pointer-events: none;
 }
@@ -151,7 +149,7 @@ onMounted(() => {
 .scan-frame {
   position: relative;
   border: 2px solid #00a0f0;
-  height: 60%;
+  height: 50%;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
@@ -178,7 +176,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 60%;
+  height: 100%;
   border: 2px solid transparent;
   border-image: linear-gradient(45deg, #00a0f0, transparent, #00a0f0) 1;
   animation: border-glow 2s linear infinite;
