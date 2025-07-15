@@ -50,7 +50,7 @@ const codeScanned = (code) => {
 }
 const toSubmit = async () => {
   show.value = false
-  alert(form.value)
+  alert(JSON.stringify(form.value))
   // try {
   //   const res = await addTrackers(form.value)
   //   if (res.code === 200) {

@@ -75,19 +75,21 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-    if (deviceArr.length === 0) {
-      cameraConfig.value = {
-        facingMode: cameraType.value,
-        autoFocus: true,
-      }
-    } else {
-      cameraConfig.value = {
-        facingMode: cameraType.value,
-        deviceId: deviceArr[0].deviceId,
-        autoFocus: true,
-      }
+    // const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
+    // if (deviceArr.length === 0) {
+    cameraConfig.value = {
+      facingMode: cameraType.value,
+      autoFocus: true,
+      width: 1920,
+      height: 1440,
     }
+    // } else {
+    //   cameraConfig.value = {
+    //     facingMode: cameraType.value,
+    //     deviceId: deviceArr[0].deviceId,
+    //     autoFocus: true,
+    //   }
+    // }
     /*    console.log(videoDevices.length > 0,'videoDevices');
            console.log(videoDevices[0].deviceId !== '','videoDevices');*/
     // 权限检测逻辑（通过 deviceId 是否为空判断）
@@ -99,7 +101,12 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: cameraType.value },
+        video: {
+          facingMode: cameraType.value,
+          autoFocus: true,
+          width: 1920,
+          height: 1440,
+        },
       })
       //停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
