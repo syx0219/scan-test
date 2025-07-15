@@ -75,15 +75,15 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-    if (deviceArr.length === 0) {
-      cameraConfig.value = {
-        facingMode: cameraType.value,
-        autoFocus: true,
-        width: 750,
-        height: 1000,
-      }
+    // const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
+    // if (deviceArr.length === 0) {
+    cameraConfig.value = {
+      facingMode: cameraType.value,
+      autoFocus: true,
+      width: 750,
+      height: 1000,
     }
+    // }
     // } else {
     //   cameraConfig.value = {
     //     facingMode: cameraType.value,
