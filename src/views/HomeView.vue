@@ -47,7 +47,7 @@ const codeScanned = (code) => {
     }
   })
   // show.value = true
-  alert(JSON.stringify(form.value))
+  alert(JSON.stringify(arr))
 }
 const toSubmit = async () => {
   show.value = false
