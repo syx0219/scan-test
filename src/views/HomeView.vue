@@ -46,11 +46,12 @@ const codeScanned = (code) => {
       form.value[key[0]] = key[1]
     }
   })
-  show.value = true
+  // show.value = true
+  alert(JSON.stringify(form.value))
 }
 const toSubmit = async () => {
   show.value = false
-  alert(JSON.stringify(form.value))
+
   // try {
   //   const res = await addTrackers(form.value)
   //   if (res.code === 200) {
