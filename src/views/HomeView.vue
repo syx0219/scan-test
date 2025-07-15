@@ -42,12 +42,13 @@ const codeScanned = (code) => {
   var arr = code.split('"').filter((item) => item !== '')
   arr.map((item) => {
     let key = item.split(':')
+    alert(JSON.stringify(key))
     if (key.length > 1) {
       form.value[key[0]] = key[1]
     }
   })
   // show.value = true
-  alert(JSON.stringify(arr))
+  // alert(JSON.stringify(arr))
 }
 const toSubmit = async () => {
   show.value = false
