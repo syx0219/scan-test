@@ -5,8 +5,8 @@
     </div>
     <h1 class="title">{{ $t('home.title') }}</h1>
     <div class="scroll-container">
-      <button @click="show = true">提交</button>
-      <!-- <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan> -->
+      <!-- <button @click="show = true">提交</button> -->
+      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
       <!-- <Scaner
         v-on:code-scanned="codeScanned"
         v-on:error-captured="errorCaptured"
