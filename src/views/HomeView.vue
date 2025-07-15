@@ -5,7 +5,8 @@
     </div>
     <h1 class="title">{{ $t('home.title') }}</h1>
     <div class="scroll-container">
-      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
+      <button @click="show = true">提交</button>
+      <!-- <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan> -->
       <!-- <Scaner
         v-on:code-scanned="codeScanned"
         v-on:error-captured="errorCaptured"
@@ -52,12 +53,18 @@ const toSubmit = async () => {
   show.value = false
   try {
     const res = await addTrackers(form.value)
+    // const res = await addTrackers({
+    //   dev_eui: '70B3D57ED006EC52',
+    //   app_eui: 'DF565DFDFDFCCCDD',
+    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+    //   sn: 'TRAL2252400100001',
+    // })
     if (res.code === 200) {
       showToast('添加成功')
     }
   } catch (error) {
-    alert(error)
-    // showToast(error.message)
+    // console.error(error)
+    showToast(error.message)
   }
 }
 

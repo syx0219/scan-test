@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { showFailToast } from 'vant'
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://192.168.2.78/api/',
   timeout: 50000,
@@ -8,10 +9,10 @@ service.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
     // 例如：添加token到header中
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers['Autho-rization'] = `Bearer ${token}`
-    }
+    // const token = localStorage.getItem('token')
+    // if (token) {
+    config.headers['Autho-rization'] = `Bearer 9f02d361abe3c9b000b7a2dc8f121a8f`
+    // }
     // console.log(token)
     config.headers['lang'] = localStorage.getItem('lang') || 'en'
     // config.headers['Accept'] = 'application/json';  //www站使用
@@ -30,20 +31,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status == 200) {
-      alert(response.data.code)
       if (response.data.code == 300) {
-        ElMessage({
-          type: 'error',
-          message: response.data.message,
-        })
+        showFailToast(response.data.message)
         localStorage.removeItem('token')
         return Promise.reject(response.data.message)
       }
       if (response.data.code == 400) {
-        ElMessage({
-          type: 'error',
-          message: response.data.message,
-        })
+        showFailToast(response.data.message)
         return Promise.reject(response.data.message)
       }
       if (response.data.code == 200) {
