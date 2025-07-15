@@ -144,14 +144,14 @@ onMounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  height: 80%;
+  height: 100%;
   pointer-events: none;
 }
 
 .scan-frame {
   position: relative;
   border: 2px solid #00a0f0;
-  height: 70%;
+  height: 60%;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
@@ -178,7 +178,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 60%;
   border: 2px solid transparent;
   border-image: linear-gradient(45deg, #00a0f0, transparent, #00a0f0) 1;
   animation: border-glow 2s linear infinite;
