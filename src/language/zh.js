@@ -10,6 +10,7 @@ export default {
     constrainedError: '约束不匹配任何已安装的摄像头。',
     unknownError: '未知错误',
     failText: '摄像头调用失败,请检查是否开启摄像头权限或切换其他浏览器尝试',
+    addSuccess: '添加成功',
   },
   scaner: {
     notifyText: '若当前浏览器无法扫码，请切换其他浏览器尝试',

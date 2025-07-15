@@ -11,6 +11,7 @@ export default {
     unknownError: 'Unknown error',
     failText:
       'Camera call failed, please check if camera permission is enabled or switch to another browser to try.',
+    addSuccess: 'Added successfully',
   },
   scaner: {
     notifyText:

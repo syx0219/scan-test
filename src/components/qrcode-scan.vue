@@ -143,7 +143,7 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: 100%;
   height: 100%;
   pointer-events: none;
 }
@@ -151,7 +151,8 @@ onMounted(() => {
 .scan-frame {
   position: relative;
   border: 2px solid #00a0f0;
-  height: 70%;
+  width: 500px;
+  height: 500px;
   margin: 20% auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);

@@ -60,7 +60,7 @@ const toSubmit = async () => {
     //   sn: 'TRAL2252400100001',
     // })
     if (res.code === 200) {
-      showToast('添加成功')
+      showToast($t('home.addSuccess'))
     }
   } catch (error) {
     // console.error(error)
