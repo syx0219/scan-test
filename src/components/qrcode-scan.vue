@@ -75,22 +75,21 @@ const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    // const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-    // if (deviceArr.length === 0) {
-    cameraConfig.value = {
-      facingMode: cameraType.value,
-      autoFocus: true,
-      width: 1920,
-      height: 750,
+    const deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
+    if (deviceArr.length === 0) {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+        autoFocus: true,
+      }
+    } else {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+        deviceId: deviceArr[0].deviceId,
+        autoFocus: true,
+        width: 1200,
+        height: 800,
+      }
     }
-    // }
-    // } else {
-    //   cameraConfig.value = {
-    //     facingMode: cameraType.value,
-    //     deviceId: deviceArr[0].deviceId,
-    //     autoFocus: true,
-    //   }
-    // }
     /*    console.log(videoDevices.length > 0,'videoDevices');
            console.log(videoDevices[0].deviceId !== '','videoDevices');*/
     // 权限检测逻辑（通过 deviceId 是否为空判断）
@@ -105,8 +104,6 @@ const initCamera = async () => {
         video: {
           facingMode: cameraType.value,
           autoFocus: true,
-          width: 1920,
-          height: 1440,
         },
       })
       //停止初始化的媒体流（仅用于触发权限）
