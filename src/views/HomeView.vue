@@ -40,13 +40,14 @@ const codeScanned = (code) => {
   // showToast(code)
   text.value = code
   var arr = code.split(',').filter((item) => item !== '')
-  // arr.map((item) => {
-  //   let key = item.split(':')
-  //   if (key.length > 1) {
-  //     form.value[key[0]] = key[1]
-  //   }
-  // })
-  alert(JSON.stringify(arr))
+  arr.map((item) => {
+    let key = item.split(':')
+    if (key.length > 1) {
+      form.value[key[0].toLowerCase()] = key[1]
+    }
+  })
+  alert(JSON.stringify(form.value))
+  // alert(JSON.stringify(arr))
 }
 const toSubmit = async () => {
   show.value = false
