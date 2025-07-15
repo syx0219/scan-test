@@ -1,138 +1,93 @@
 <template>
-  <div class="scan">
+  <div class="home">
     <div class="nav">
       <img src="@/assets/Elecrow-LOGO.webp" alt="Elecrow-LOGO" />
     </div>
-    <h1 class="title">{{ $t('home.title') }}</h1>
-    <div class="scroll-container">
-      <!-- <button @click="show = true">提交</button> -->
-      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
-      <!-- <Scaner
-        v-on:code-scanned="codeScanned"
-        v-on:error-captured="errorCaptured"
-        :stop-on-scanned="true"
-        :draw-on-found="true"
-        :responsive="false"
-      /> -->
+    <div class="tips">
+      <p class="tips_title">Elecrow Scan</p>
+      <p class="tips_descript">Scan QRcode By Your Browser</p>
     </div>
-    <van-dialog
-      v-model:show="show"
-      :title="$t('home.result')"
-      :confirmButtonText="$t('home.confirmBtn')"
-      @confirm="toSubmit"
-    >
-      <div class="popup-content">
-        <div class="popup-text" v-if="text !== ''">{{ text }}</div>
-      </div>
-    </van-dialog>
+    <van-button type="primary" class="button" @click="router.push('/scan')">{{
+      $t('home.startScan')
+    }}</van-button>
   </div>
 </template>
-<script setup>
-import { onMounted, ref, getCurrentInstance } from 'vue'
-// import Scaner from '@/components/scaner.vue'
-import QrcodeStream from '@/components/qrcode-scan.vue'
-import { showToast } from 'vant'
-import { addTrackers } from '@/api/scan.js'
-const { $t } = getCurrentInstance().proxy
-const show = ref(false)
-const form = ref({})
-const text = ref('')
-const codeScanned = (code) => {
-  // showToast(code)
-  text.value = code
-  var arr = code.split(',').filter((item) => item !== '')
-  arr.map((item) => {
-    let key = item.split(':')
-    if (key.length > 1) {
-      form.value[key[0].toLowerCase()] = key[1]
-    }
-  })
-  show.value = true
-}
-const toSubmit = async () => {
-  show.value = false
-  try {
-    const res = await addTrackers(form.value)
-    // const res = await addTrackers({
-    //   dev_eui: '70B3D57ED006EC52',
-    //   app_eui: 'DF565DFDFDFCCCDD',
-    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-    //   sn: 'TRAL2252400100001',
-    // })
-    if (res.code === 200) {
-      showToast($t('home.addSuccess'))
-    }
-  } catch (error) {
-    // console.error(error)
-    showToast(error.message)
-  }
-}
 
-// const errorCaptured = (error) => {
-//   switch (error.name) {
-//     case 'NotAllowedError':
-//       errorMessage.value = $t('home.allowedError')
-//       break
-//     case 'NotFoundError':
-//       errorMessage.value = $t('home.foundError')
-//       break
-//     case 'NotSupportedError':
-//       errorMessage.value = $t('home.supportedError')
-//       break
-//     case 'NotReadableError':
-//       errorMessage.value = $t('home.readableError')
-//       break
-//     case 'OverconstrainedError':
-//       errorMessage.value = $t('home.constrainedError')
-//       break
-//     default:
-//       errorMessage.value = $t('home.unknownError') + error.message
-//   }
-//   showFailToast(errorMessage.value)
-// }
-onMounted(() => {
-  // var str = navigator.userAgent.toLowerCase()
-  // var ver = str.match(/cpu iphone os (.*?) like mac os/)
-  // if (ver && ver[1].replace(/_/g, '.') < '10.3.3') {
-  //   showFailToast($t('home.failText'))
-  // }
-})
+<script setup>
+import { getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
+const { $t } = getCurrentInstance().proxy
+const router = useRouter()
 </script>
-<style scoped>
-.scan {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+
+<style>
+.home {
+  height: 100vh;
+  background: #f0f8ff;
+  position: relative;
 }
-.scan .nav {
+.home .nav {
   width: 100%;
   padding: 10px 0;
 }
-.scan .nav img {
+.home .nav img {
   display: block;
   width: 226px;
   height: 50px;
   margin: 0 auto;
   border: 0;
 }
-.scan .title {
+.tips {
+  width: 100%;
+  position: absolute;
+  bottom: 50%;
+  left: 0;
+  padding-top: 400px;
+  color: #259cfd;
+  text-align: center;
+  animation: move 5s ease-in-out infinite;
+  animation-fill-mode: both;
+}
+.tips p {
   padding: 0;
   margin: 0;
-  font-size: 16px;
-  line-height: 40px;
-  text-align: center;
 }
-.scroll-container {
-  flex: 1;
-  height: 100%;
+.tips .tips_title {
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
 }
-.popup-content {
-  padding: 12px;
+.tips .tips_descript {
+  font-size: 20px;
+  padding-top: 12px;
 }
-.popup-content .popup-text {
-  word-break: break-all;
-  font-size: 16px;
-  line-height: 25px;
+.button {
+  height: 56px;
+  width: 246px;
+  line-height: 56px;
+  background-size: 100% 100%;
+  position: absolute;
+  bottom: 72px;
+  left: 50%;
+  margin-left: -123px;
+  outline: none;
+  border: none;
+  -webkit-appearance: none;
+  user-select: none;
+  color: #ffffff;
+  font-size: 18px;
+  filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(36px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 </style>

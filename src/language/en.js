@@ -12,6 +12,7 @@ export default {
     failText:
       'Camera call failed, please check if camera permission is enabled or switch to another browser to try.',
     addSuccess: 'Added successfully',
+    startScan: 'Start Scanning',
   },
   scaner: {
     notifyText:

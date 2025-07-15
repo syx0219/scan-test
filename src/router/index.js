@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import otherView from '@/views/other.vue'
+import otherView from '@/views/Scan.vue'
 const router = createRouter({
   history: createWebHistory('/scan-test/'),
   routes: [
@@ -10,8 +10,8 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/other',
-      name: 'other',
+      path: '/scan',
+      name: 'Scan',
       component: otherView,
     },
   ],
