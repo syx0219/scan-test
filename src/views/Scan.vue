@@ -5,7 +5,8 @@
       <span>{{ $t('home.title') }}</span>
     </h1>
     <div class="scroll-container">
-      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
+      <button @click="show = true">提交</button>
+      <!-- <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan> -->
     </div>
     <van-dialog
       v-model:show="show"
@@ -38,33 +39,29 @@ const text = ref(null)
 const codeScanned = (code) => {
   // showToast(code)
   text.value = JSON.parse(code)
-  // var arr = code.split(',').filter((item) => item !== '')
-  // arr.map((item) => {
-  //   let key = item.split(':')
-  //   if (key.length > 1) {
-  //     form.value[key[0].toLowerCase()] = key[1]
-  //   }
-  // })
   show.value = true
 }
 const toSubmit = async () => {
   show.value = false
-  // try {
-  //   const res = await addTrackers(form.value)
-  //   // const res = await addTrackers({
-  //   //   dev_eui: '70B3D57ED006EC52',
-  //   //   app_eui: 'DF565DFDFDFCCCDD',
-  //   //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-  //   //   sn: 'TRAL2252400100001',
-  //   // })
-  //   if (res.code === 200) {
-  //     showToast($t('home.addSuccess'))
-  //   }
-  // } catch (error) {
-  //   // console.error(error)
-  //   showToast(error.message)
-  // }
+  try {
+    const res = await addTrackers(form.value)
+    // const res = await addTrackers({
+    //   dev_eui: '70B3D57ED006EC52',
+    //   app_eui: 'DF565DFDFDFCCCDD',
+    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+    //   sn: 'TRAL2252400100001',
+    // })
+    if (res.code === 200) {
+      showToast($t('home.addSuccess'))
+    }
+  } catch (error) {
+    // console.error(error)
+    showToast(error.message)
+  }
 }
+onMounted(() => {
+  localStorage.setItem('token', '9f02d361abe3c9b000b7a2dc8f121a8f')
+})
 </script>
 <style scoped>
 .scan {
@@ -98,9 +95,11 @@ const toSubmit = async () => {
 .popup-content {
   padding: 12px;
 }
-.popup-content .popup-text {
+.popup-content .popup-text p {
   word-break: break-all;
   font-size: 16px;
   line-height: 25px;
+  margin: 5px 0;
+  padding: 0;
 }
 </style>

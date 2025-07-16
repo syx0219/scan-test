@@ -9,11 +9,10 @@ service.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
     // 例如：添加token到header中
-    // const token = localStorage.getItem('token')
-    // if (token) {
-    config.headers['Autho-rization'] = `Bearer 9f02d361abe3c9b000b7a2dc8f121a8f`
-    // }
-    // console.log(token)
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers['Autho-rization'] = `Bearer ${token}`
+    }
     config.headers['lang'] = localStorage.getItem('lang') || 'en'
     // config.headers['Accept'] = 'application/json';  //www站使用
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8' //tete站使用
