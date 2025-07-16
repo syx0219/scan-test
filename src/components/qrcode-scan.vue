@@ -80,12 +80,16 @@ const initCamera = async () => {
       cameraConfig.value = {
         facingMode: cameraType.value,
         autoFocus: true,
+        width: 1000,
+        height: 750,
       }
     } else {
       cameraConfig.value = {
         facingMode: cameraType.value,
         deviceId: deviceArr[0].deviceId,
         autoFocus: true,
+        width: 1000,
+        height: 750,
       }
     }
     /*    console.log(videoDevices.length > 0,'videoDevices');
@@ -141,16 +145,16 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 300px;
   pointer-events: none;
 }
 
 .scan-frame {
   position: relative;
   border: 2px solid #00a0f0;
-  height: 50%;
-  margin: 20% auto;
+  height: 100%;
+  margin: auto;
   border-radius: 4px;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
   clip-path: inset(0 0 0 0);
@@ -215,6 +219,7 @@ onMounted(() => {
   text-align: center;
   font-size: 14px;
   text-shadow: 0 0 5px rgba(0, 160, 240, 0.5);
+  margin-top: 20px;
 }
 
 .permission-alert {

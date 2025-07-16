@@ -42,7 +42,7 @@ const router = useRouter()
   position: absolute;
   bottom: 50%;
   left: 0;
-  padding-top: 300px;
+  padding-top: 200px;
   color: #259cfd;
   text-align: center;
   animation: move 5s ease-in-out infinite;

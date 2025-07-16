@@ -63,16 +63,15 @@ const toSubmit = async () => {
 </script>
 <style scoped>
 .scan {
-  height: 100%;
+  height: 100vh;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 .scan .title {
   padding: 0;
   margin: 0;
   font-size: 16px;
   line-height: 40px;
+  height: 40px;
   text-align: center;
   background-color: #259cfd;
   display: flex;
@@ -86,8 +85,7 @@ const toSubmit = async () => {
   text-align: center;
 }
 .scroll-container {
-  flex: 1;
-  height: 100%;
+  height: calc(100vh - 40px);
 }
 .popup-content {
   padding: 12px;
