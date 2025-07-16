@@ -4,8 +4,8 @@
       <img src="@/assets/Elecrow-LOGO.webp" alt="Elecrow-LOGO" />
     </div>
     <div class="tips">
-      <p class="tips_title">Elecrow Scan</p>
-      <p class="tips_descript">Scan QRcode By Your Browser</p>
+      <p class="tips_title">{{ $t('home.tipsTitle') }}</p>
+      <p class="tips_descript">{{ $t('home.tipsDescript') }}</p>
     </div>
     <van-button type="primary" class="button" @click="router.push('/scan')">{{
       $t('home.startScan')
@@ -14,13 +14,10 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, onMounted } from 'vue'
+import { getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 const { $t } = getCurrentInstance().proxy
 const router = useRouter()
-onMounted(() => {
-  localStorage.setItem('token', '9f02d361abe3c9b000b7a2dc8f121a8f')
-})
 </script>
 
 <style>

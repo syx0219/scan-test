@@ -12,10 +12,20 @@ export default {
     failText: '摄像头调用失败,请检查是否开启摄像头权限或切换其他浏览器尝试',
     addSuccess: '添加成功',
     startScan: '开始扫描',
+    tipsTitle: 'Elecrow 扫描',
+    tipsDescript: '使用您的浏览器扫描二维码',
   },
   scaner: {
     notifyText: '若当前浏览器无法扫码，请切换其他浏览器尝试',
     tips: '将二维码放入框内，即可自动扫描',
     startBtn: '请重新授权',
+  },
+  login: {
+    loginLabel: '登录',
+    emailLabel: '邮箱',
+    passwordLabel: '密码',
+    emailFail: '请输入正确的邮箱',
+    passwordFail: '请输入最少8位字符, 可包含有字母和数字',
+    submitBut: '提交',
   },
 }

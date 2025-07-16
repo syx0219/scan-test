@@ -14,8 +14,7 @@ service.interceptors.request.use(
       config.headers['Autho-rization'] = `Bearer ${token}`
     }
     config.headers['lang'] = localStorage.getItem('lang') || 'en'
-    // config.headers['Accept'] = 'application/json';  //www站使用
-    config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8' //tete站使用
+    config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
     config.data = typeof config.data === 'undefined' ? {} : config.data
     return config
