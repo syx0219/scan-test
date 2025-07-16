@@ -1,9 +1,9 @@
 <template>
   <div class="scan">
-    <h1 class="title">
+    <!-- <h1 class="title">
       <van-icon name="arrow-left" @click="router.back()" />
       <span>{{ $t('home.title') }}</span>
-    </h1>
+    </h1> -->
     <div class="scroll-container">
       <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
     </div>

@@ -80,16 +80,16 @@ const initCamera = async () => {
       cameraConfig.value = {
         facingMode: cameraType.value,
         autoFocus: true,
-        width: 1000,
-        height: 750,
+        width: 1200,
+        height: 800,
       }
     } else {
       cameraConfig.value = {
         facingMode: cameraType.value,
         deviceId: deviceArr[0].deviceId,
         autoFocus: true,
-        width: 1000,
-        height: 750,
+        width: 1200,
+        height: 800,
       }
     }
     /*    console.log(videoDevices.length > 0,'videoDevices');
