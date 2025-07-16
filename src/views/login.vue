@@ -58,7 +58,7 @@ const validatePass = (value) => {
 }
 
 const onSubmit = async (values) => {
-  //   console.log('submit', values)
+  alert('submit', values)
   if (values.password === '') {
     return showToast('password cannot be empty')
   }
