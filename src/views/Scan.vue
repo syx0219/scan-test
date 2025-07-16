@@ -5,8 +5,7 @@
       <span>{{ $t('home.title') }}</span>
     </h1>
     <div class="scroll-container">
-      <button @click="show = true">提交</button>
-      <!-- <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan> -->
+      <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
     </div>
     <van-dialog
       v-model:show="show"
