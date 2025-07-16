@@ -7,19 +7,21 @@
     <div class="scroll-container">
       <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
     </div>
+    <!-- :confirmButtonText="$t('home.confirmBtn')" -->
     <van-dialog
       v-model:show="show"
       :title="$t('home.result')"
-      :confirmButtonText="$t('home.confirmBtn')"
+      :confirmButtonText="'close'"
       @confirm="toSubmit"
     >
       <div class="popup-content">
-        <div class="popup-text" v-if="text">
+        <div class="popup-text" v-if="text">{{ text }}</div>
+        <!-- <div class="popup-text" v-if="text">
           <p>dev_eui:{{ text.dev_eui }}</p>
           <p>app_eui:{{ text.app_eui }}</p>
           <p>app_key:{{ text.app_key }}</p>
           <p>sn:{{ text.sn }}</p>
-        </div>
+        </div> -->
       </div>
     </van-dialog>
   </div>
@@ -37,26 +39,27 @@ const form = ref({})
 const text = ref(null)
 const codeScanned = (code) => {
   // showToast(code)
-  text.value = JSON.parse(code)
+  // text.value = JSON.parse(code)
+  text.value = code
   show.value = true
 }
 const toSubmit = async () => {
   show.value = false
-  try {
-    const res = await addTrackers(form.value)
-    // const res = await addTrackers({
-    //   dev_eui: '70B3D57ED006EC52',
-    //   app_eui: 'DF565DFDFDFCCCDD',
-    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-    //   sn: 'TRAL2252400100001',
-    // })
-    if (res.code === 200) {
-      showToast($t('home.addSuccess'))
-    }
-  } catch (error) {
-    // console.error(error)
-    showToast(error.message)
-  }
+  // try {
+  //   const res = await addTrackers(form.value)
+  //   // const res = await addTrackers({
+  //   //   dev_eui: '70B3D57ED006EC52',
+  //   //   app_eui: 'DF565DFDFDFCCCDD',
+  //   //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+  //   //   sn: 'TRAL2252400100001',
+  //   // })
+  //   if (res.code === 200) {
+  //     showToast($t('home.addSuccess'))
+  //   }
+  // } catch (error) {
+  //   // console.error(error)
+  //   showToast(error.message)
+  // }
 }
 </script>
 <style scoped>
