@@ -58,7 +58,7 @@ const validatePass = (value) => {
 }
 
 const onSubmit = async (values) => {
-  alert(values)
+  alert(JSON.stringify(values))
   if (values.password === '') {
     return showToast('password cannot be empty')
   }
