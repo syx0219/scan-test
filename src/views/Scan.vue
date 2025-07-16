@@ -45,6 +45,9 @@ const codeScanned = (code) => {
 }
 const toSubmit = async () => {
   show.value = false
+  setTimeout(() => {
+    router.back()
+  }, 1000)
   // try {
   //   const res = await addTrackers(form.value)
   //   // const res = await addTrackers({
