@@ -33,14 +33,15 @@ const text = ref('')
 const codeScanned = (code) => {
   // showToast(code)
   text.value = code
-  var arr = code.split(',').filter((item) => item !== '')
-  arr.map((item) => {
-    let key = item.split(':')
-    if (key.length > 1) {
-      form.value[key[0].toLowerCase()] = key[1]
-    }
-  })
-  show.value = true
+  alert(code)
+  // var arr = code.split(',').filter((item) => item !== '')
+  // arr.map((item) => {
+  //   let key = item.split(':')
+  //   if (key.length > 1) {
+  //     form.value[key[0].toLowerCase()] = key[1]
+  //   }
+  // })
+  // show.value = true
 }
 const toSubmit = async () => {
   show.value = false
