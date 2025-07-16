@@ -20,6 +20,7 @@ export const useUserStore = defineStore(
           localStorage.setItem('token', token.value)
         }
         userInfo.value = res.data.user_info
+        alert('登录成功')
         let redirectPath = route.query.redirect || '/'
         router.push(redirectPath, 1000)
       } catch (error) {
