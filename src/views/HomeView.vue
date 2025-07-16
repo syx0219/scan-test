@@ -14,10 +14,13 @@
 </template>
 
 <script setup>
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const { $t } = getCurrentInstance().proxy
 const router = useRouter()
+onMounted(() => {
+  localStorage.setItem('token', '9f02d361abe3c9b000b7a2dc8f121a8f')
+})
 </script>
 
 <style>

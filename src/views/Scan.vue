@@ -26,7 +26,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import QrcodeStream from '@/components/qrcode-scan.vue'
 import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
@@ -59,9 +59,6 @@ const toSubmit = async () => {
     showToast(error.message)
   }
 }
-onMounted(() => {
-  localStorage.setItem('token', '9f02d361abe3c9b000b7a2dc8f121a8f')
-})
 </script>
 <style scoped>
 .scan {
