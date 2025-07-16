@@ -33,7 +33,7 @@ const text = ref('')
 const codeScanned = (code) => {
   // showToast(code)
   text.value = code
-  alert(code)
+  alert(typeof code)
   // var arr = code.split(',').filter((item) => item !== '')
   // arr.map((item) => {
   //   let key = item.split(':')
