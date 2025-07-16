@@ -14,7 +14,12 @@
       @confirm="toSubmit"
     >
       <div class="popup-content">
-        <div class="popup-text" v-if="text !== ''">{{ text }}</div>
+        <div class="popup-text" v-if="text">
+          <p>dev_eui:{{ text.dev_eui }}</p>
+          <p>app_eui:{{ text.app_eui }}</p>
+          <p>app_key:{{ text.app_key }}</p>
+          <p>sn:{{ text.sn }}</p>
+        </div>
       </div>
     </van-dialog>
   </div>
@@ -29,11 +34,10 @@ const router = useRouter()
 const { $t } = getCurrentInstance().proxy
 const show = ref(false)
 const form = ref({})
-const text = ref('')
+const text = ref(null)
 const codeScanned = (code) => {
   // showToast(code)
-  text.value = code
-  alert(typeof code)
+  text.value = JSON.parse(code)
   // var arr = code.split(',').filter((item) => item !== '')
   // arr.map((item) => {
   //   let key = item.split(':')
@@ -41,25 +45,25 @@ const codeScanned = (code) => {
   //     form.value[key[0].toLowerCase()] = key[1]
   //   }
   // })
-  // show.value = true
+  show.value = true
 }
 const toSubmit = async () => {
   show.value = false
-  try {
-    const res = await addTrackers(form.value)
-    // const res = await addTrackers({
-    //   dev_eui: '70B3D57ED006EC52',
-    //   app_eui: 'DF565DFDFDFCCCDD',
-    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-    //   sn: 'TRAL2252400100001',
-    // })
-    if (res.code === 200) {
-      showToast($t('home.addSuccess'))
-    }
-  } catch (error) {
-    // console.error(error)
-    showToast(error.message)
-  }
+  // try {
+  //   const res = await addTrackers(form.value)
+  //   // const res = await addTrackers({
+  //   //   dev_eui: '70B3D57ED006EC52',
+  //   //   app_eui: 'DF565DFDFDFCCCDD',
+  //   //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+  //   //   sn: 'TRAL2252400100001',
+  //   // })
+  //   if (res.code === 200) {
+  //     showToast($t('home.addSuccess'))
+  //   }
+  // } catch (error) {
+  //   // console.error(error)
+  //   showToast(error.message)
+  // }
 }
 </script>
 <style scoped>
