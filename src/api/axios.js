@@ -29,7 +29,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status == 200) {
-      alert(response.data.message)
       if (response.data.code == 300) {
         showFailToast(response.data.message)
         localStorage.removeItem('token')

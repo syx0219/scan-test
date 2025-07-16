@@ -3,7 +3,7 @@
     <div class="warp">
       <p class="title">{{ $t('login.loginLabel') }}</p>
       <div>
-        <van-form @submit="onSubmit" label-align="top">
+        <van-form label-align="top">
           <van-cell-group inset>
             <van-field
               v-model="form.email"
@@ -20,7 +20,7 @@
             />
           </van-cell-group>
           <div style="margin: 16px">
-            <van-button round block type="primary" native-type="submit">{{
+            <van-button round block type="primary" @click="onSubmit">{{
               $t('login.submitBut')
             }}</van-button>
           </div>
@@ -57,20 +57,19 @@ const validatePass = (value) => {
   }
 }
 
-const onSubmit = async (values) => {
-  alert('submit', values)
-  if (values.password === '') {
+const onSubmit = async () => {
+  alert('submit', form.value)
+  if (form.value.password === '') {
     return showToast('password cannot be empty')
   }
-  if (values.email === '') {
+  if (form.value.email === '') {
     return showToast('Email cannot be empty')
   }
   try {
-    user.toLogin(values)
+    user.toLogin(form.value)
   } catch (err) {
     if (err.indexOf('Email already exists') != -1) {
       form.value.password = ''
-      activeName.value = 'login'
     }
     showToast(err)
     console.error(err)
