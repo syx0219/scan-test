@@ -72,6 +72,7 @@ const onSubmit = async (values) => {
       form.value.password = ''
       activeName.value = 'login'
     }
+    showToast(err)
     console.error(err)
   }
 }
