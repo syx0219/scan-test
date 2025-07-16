@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <qrcode-stream
       v-if="isCameraActive"
       :constraints="cameraConfig"

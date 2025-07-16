@@ -1,9 +1,9 @@
 <template>
   <div class="scan">
-    <!-- <h1 class="title">
+    <h1 class="title">
       <van-icon name="arrow-left" @click="router.back()" />
       <span>{{ $t('home.title') }}</span>
-    </h1> -->
+    </h1>
     <div class="scroll-container">
       <qrcode-scan v-on:code-scanned="codeScanned"></qrcode-scan>
     </div>
@@ -63,8 +63,10 @@ const toSubmit = async () => {
 </script>
 <style scoped>
 .scan {
-  height: 100vh;
+  height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .scan .title {
   padding: 0;
@@ -85,7 +87,8 @@ const toSubmit = async () => {
   text-align: center;
 }
 .scroll-container {
-  height: calc(100vh - 40px);
+  flex: 1;
+  height: 100%;
 }
 .popup-content {
   padding: 12px;

@@ -22,7 +22,7 @@ const router = useRouter()
 
 <style>
 .home {
-  height: 100vh;
+  height: 100%;
   background: #f0f8ff;
   position: relative;
 }
