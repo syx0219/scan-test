@@ -15,7 +15,6 @@ export const useUserStore = defineStore(
     const toLogin = async (login) => {
       try {
         const res = await loginUser(login)
-        alert(JSON.stringify(res))
         if (res.data.token) {
           token.value = res.data.token
           localStorage.setItem('token', token.value)

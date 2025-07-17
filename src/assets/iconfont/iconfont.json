@@ -1,0 +1,23 @@
+{
+  "id": "4826492",
+  "name": "vue-elecrow",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11539970",
+      "name": "可见",
+      "font_class": "kejian",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "18372376",
+      "name": "眼睛-关",
+      "font_class": "yanjing-guan",
+      "unicode": "e6cd",
+      "unicode_decimal": 59085
+    }
+  ]
+}

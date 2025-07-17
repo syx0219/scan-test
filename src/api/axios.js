@@ -59,6 +59,7 @@ service.interceptors.response.use(
           console.error('请求失败，请稍后再试')
       }
     } else if (error.request) {
+      alert('请求失败，请稍后再试')
       console.error('请求失败，请检查网络连接')
     } else {
       console.error('请求配置错误')

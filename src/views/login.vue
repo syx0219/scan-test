@@ -3,21 +3,29 @@
     <div class="warp">
       <p class="title">{{ $t('login.loginLabel') }}</p>
       <div>
-        <van-form @submit="onSubmit" label-align="top">
+        <van-form @submit="onSubmit">
           <van-cell-group inset>
             <van-field
               v-model="form.email"
               :label="$t('login.emailLabel')"
               name="email"
               :rules="[{ validator: validator }]"
+              label-align="top"
             />
             <van-field
               v-model="form.password"
-              type="password"
+              :type="isOpen ? 'text' : 'password'"
               name="password"
               :label="$t('login.passwordLabel')"
               :rules="[{ validator: validatePass }]"
-            />
+              label-align="top"
+            >
+              <template #button>
+                <div @click="isOpen = !isOpen">
+                  <i class="iconfont" :class="isOpen ? 'icon-kejian' : 'icon-yanjing-guan'"></i>
+                </div>
+              </template>
+            </van-field>
           </van-cell-group>
           <div style="margin: 16px">
             <van-button round block type="primary" native-type="submit">{{
@@ -36,6 +44,7 @@ import { showToast } from 'vant'
 import { useUserStore } from '@/stores/user.js'
 const user = useUserStore()
 const { $t } = getCurrentInstance().proxy
+const isOpen = ref(false)
 const form = ref({
   email: '',
   password: '',
@@ -65,7 +74,6 @@ const onSubmit = (values) => {
     return showToast('Email cannot be empty')
   }
   try {
-    alert('进来了')
     user.toLogin(values)
   } catch (err) {
     if (err.indexOf('Email already exists') != -1) {
