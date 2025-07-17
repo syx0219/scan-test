@@ -15,14 +15,14 @@ export const useUserStore = defineStore(
     const toLogin = async (login) => {
       try {
         const res = await loginUser(login)
-        alert(JSON.parse(res))
+        alert(JSON.stringify(res))
         if (res.data.token) {
           token.value = res.data.token
           localStorage.setItem('token', token.value)
         }
         userInfo.value = res.data.user_info
-        // let redirectPath = route.query.redirect || '/'
-        router.push('/')
+        let redirectPath = route.query.redirect || '/'
+        router.push(redirectPath, 1000)
       } catch (error) {
         console.error(error)
       }

@@ -57,7 +57,7 @@ const validatePass = (value) => {
   }
 }
 
-const onSubmit = async (values) => {
+const onSubmit = (values) => {
   if (values.password === '') {
     return showToast('password cannot be empty')
   }
@@ -65,6 +65,7 @@ const onSubmit = async (values) => {
     return showToast('Email cannot be empty')
   }
   try {
+    alert('进来了')
     user.toLogin(values)
   } catch (err) {
     if (err.indexOf('Email already exists') != -1) {
