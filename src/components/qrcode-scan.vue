@@ -102,6 +102,17 @@ const initCamera = async () => {
     if (!hasPermission) {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: cameraType.value,
+          autoFocus: true,
+          width: 1200,
+          height: 800,
+        },
+      })
+      //停止初始化的媒体流（仅用于触发权限）
+      stream.getTracks().forEach((track) => track.stop())
+      // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
       deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
@@ -121,11 +132,6 @@ const initCamera = async () => {
           height: 800,
         }
       }
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: cameraConfig.value,
-      })
-      //停止初始化的媒体流（仅用于触发权限）
-      stream.getTracks().forEach((track) => track.stop())
     }
     // console.log("可用摄像头:", videoDevices);
     if (videoDevices.length === 0) {
