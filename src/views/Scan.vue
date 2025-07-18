@@ -55,13 +55,13 @@ const toSubmit = async () => {
     })
     if (res.code === 200) {
       showToast($t('home.addSuccess'))
-      setTimeout(() => {
-        router.back()
-      }, 500)
+      // setTimeout(() => {
+      router.back()
+      // }, 500)
     }
   } catch (error) {
     // console.error(error)
-    showToast(error.message)
+    showToast(error)
   }
 }
 </script>
