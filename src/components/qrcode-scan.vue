@@ -103,10 +103,7 @@ const initCamera = async () => {
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: cameraType.value,
-          autoFocus: true,
-        },
+        video: cameraConfig.value,
       })
       //停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
