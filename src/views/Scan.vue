@@ -46,18 +46,18 @@ const codeScanned = (code) => {
 const toSubmit = async () => {
   show.value = false
   try {
-    const res = await addTrackers(form.value)
-    // const res = await addTrackers({
-    //   dev_eui: '70B3D57ED006EC52',
-    //   app_eui: 'DF565DFDFDFCCCDD',
-    //   app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-    //   sn: 'TRAL2252400100001',
-    // })
+    // const res = await addTrackers(form.value)
+    const res = await addTrackers({
+      dev_eui: '70B3D57ED006EC52',
+      app_eui: 'DF565DFDFDFCCCDD',
+      app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+      sn: 'TRAL2252400100001',
+    })
     if (res.code === 200) {
       showToast($t('home.addSuccess'))
       setTimeout(() => {
         router.back()
-      }, 1000)
+      }, 500)
     }
   } catch (error) {
     // console.error(error)
