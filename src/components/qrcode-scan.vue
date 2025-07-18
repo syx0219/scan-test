@@ -100,6 +100,7 @@ const initCamera = async () => {
     // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
     if (!hasPermission) {
+      alert(cameraConfig.value)
       // console.log('尚未获得摄像头权限，开始请求权限...');
       //触发权限弹窗并获取流
       const stream = await navigator.mediaDevices.getUserMedia({
