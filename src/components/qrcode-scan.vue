@@ -88,10 +88,9 @@ const initCamera = async () => {
 
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
-
+    alert(hasPermission)
     // 未获取权限时的处理
     if (!hasPermission) {
-      alert(JSON.stringify(videoDevices))
       // let stream = await navigator.mediaDevices.getUserMedia({
       //   video: {
       //     facingMode: cameraType.value,
@@ -100,17 +99,13 @@ const initCamera = async () => {
       //     height: 800,
       //   },
       // })
-
       // 停止初始化的媒体流（仅用于触发权限）
       // stream.getTracks().forEach((track) => track.stop())
-
       // 重新枚举获取完整设备列表
       // devices = await navigator.mediaDevices.enumerateDevices()
       // videoDevices = devices.filter((device) => device.kind === 'videoinput')
       // deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-
       // updateCameraConfig(deviceArr)
-
       // 请求权限并获取媒体流
       // stream = await navigator.mediaDevices.getUserMedia({
       //   video: cameraConfig.value,
