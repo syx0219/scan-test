@@ -25,6 +25,7 @@ export const useUserStore = defineStore(
         let redirectPath = route.query.redirect || '/'
         router.push(redirectPath, 500)
       } catch (error) {
+        showToast(error)
         console.error(error)
       }
     }
