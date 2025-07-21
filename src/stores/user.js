@@ -3,7 +3,6 @@ import { ref, computed, getCurrentInstance } from 'vue'
 import { loginUser } from '@/api/login.js'
 import { useRouter, useRoute } from 'vue-router'
 import { showToast } from 'vant'
-const { $t } = getCurrentInstance().proxy
 export const useUserStore = defineStore(
   'user',
   () => {
@@ -12,6 +11,7 @@ export const useUserStore = defineStore(
     const token = ref('')
     const router = useRouter()
     const route = useRoute()
+    const { $t } = getCurrentInstance().proxy
     // 定义获取接口数据的action函数
     //登录
     const toLogin = async (login) => {
