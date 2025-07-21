@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { loginUser } from '@/api/login.js'
+import { useRouter, useRoute } from 'vue-router'
 import { showToast } from 'vant'
 export const useUserStore = defineStore(
   'user',
@@ -8,6 +9,8 @@ export const useUserStore = defineStore(
     //定义管理用户数据的state
     const userInfo = ref(null)
     const token = ref('')
+    const router = useRouter()
+    const route = useRoute()
     // 定义获取接口数据的action函数
     //登录
     const toLogin = async (login) => {
@@ -18,9 +21,10 @@ export const useUserStore = defineStore(
           localStorage.setItem('token', token.value)
         }
         userInfo.value = res.data.user_info
-        return true
+        showToast('Login Success')
+        let redirectPath = route.query.redirect || '/'
+        router.push(redirectPath, 500)
       } catch (error) {
-        showToast(error)
         console.error(error)
       }
     }

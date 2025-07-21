@@ -27,6 +27,5 @@ export default {
     emailFail: '请输入正确的邮箱',
     passwordFail: '请输入最少8位字符, 可包含有字母和数字',
     submitBut: '提交',
-    loginSuccess: '登录成功',
   },
 }

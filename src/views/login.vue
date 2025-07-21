@@ -42,12 +42,9 @@
 import { ref, getCurrentInstance } from 'vue'
 import { showToast } from 'vant'
 import { useUserStore } from '@/stores/user.js'
-import { useRouter, useRoute } from 'vue-router'
 const user = useUserStore()
 const { $t } = getCurrentInstance().proxy
 const isOpen = ref(false)
-const router = useRouter()
-const route = useRoute()
 const form = ref({
   email: '',
   password: '',
@@ -77,12 +74,7 @@ const onSubmit = (values) => {
     return showToast('Email cannot be empty')
   }
   try {
-    const res = user.toLogin(values)
-    if (res) {
-      showToast($t('login.loginSuccess'))
-      let redirectPath = route.query.redirect || '/'
-      router.push(redirectPath, 500)
-    }
+    user.toLogin(values)
   } catch (err) {
     if (err.indexOf('Email already exists') != -1) {
       form.value.password = ''
