@@ -70,39 +70,30 @@ const retryCamera = () => {
   showPermissionAlert.value = false
   initCamera()
 }
+const updateCameraConfig = (deviceArr) => {
+  cameraConfig.value = {
+    facingMode: cameraType.value,
+    ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
+    autoFocus: true,
+    width: 1200,
+    height: 800,
+  }
+}
 // 初始化摄像头
 const initCamera = async () => {
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
     let deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-    if (deviceArr.length === 0) {
-      cameraConfig.value = {
-        facingMode: cameraType.value,
-        autoFocus: true,
-        width: 1200,
-        height: 800,
-      }
-    } else {
-      cameraConfig.value = {
-        facingMode: cameraType.value,
-        deviceId: deviceArr[0].deviceId,
-        autoFocus: true,
-        width: 1200,
-        height: 800,
-      }
-    }
-    /*    console.log(videoDevices.length > 0,'videoDevices');
-           console.log(videoDevices[0].deviceId !== '','videoDevices');*/
+
+    updateCameraConfig(deviceArr)
+
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
-    // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
     // 未获取权限时的处理
     if (!hasPermission) {
-      // console.log('尚未获得摄像头权限，开始请求权限...');
-      //触发权限弹窗并获取流
-      const stream = await navigator.mediaDevices.getUserMedia({
+      let stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraType.value,
           autoFocus: true,
@@ -110,37 +101,29 @@ const initCamera = async () => {
           height: 800,
         },
       })
-      //停止初始化的媒体流（仅用于触发权限）
+
+      // 停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
+
       // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
       deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
-      if (deviceArr.length === 0) {
-        cameraConfig.value = {
-          facingMode: cameraType.value,
-          autoFocus: true,
-          width: 1200,
-          height: 800,
-        }
-      } else {
-        cameraConfig.value = {
-          facingMode: cameraType.value,
-          deviceId: deviceArr[0].deviceId,
-          autoFocus: true,
-          width: 1200,
-          height: 800,
-        }
-      }
+
+      updateCameraConfig(deviceArr)
+
+      // 请求权限并获取媒体流
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: cameraConfig.value,
+      })
     }
-    // console.log("可用摄像头:", videoDevices);
+
     if (videoDevices.length === 0) {
       throw new Error('NotFoundError')
     }
+
     isCameraActive.value = true
     isScanning.value = true // 确保扫描状态为开启
-    /*    console.log("当前选择的摄像头类型:", cameraType.value);
-           console.log("可用摄像头列表:", videoDevices);*/
   } catch (error) {
     await onCameraError(error)
   }

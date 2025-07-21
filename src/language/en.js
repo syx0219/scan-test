@@ -29,5 +29,6 @@ export default {
     emailFail: 'Please enter the correct email address',
     passwordFail: 'Please enter at least 8 characters, which can include letters and numbers',
     submitBut: 'Submit',
+    loginSuccess: 'Login Success',
   },
 }

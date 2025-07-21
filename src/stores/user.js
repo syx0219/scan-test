@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, getCurrentInstance } from 'vue'
 import { loginUser } from '@/api/login.js'
 import { useRouter, useRoute } from 'vue-router'
 import { showToast } from 'vant'
+const { $t } = getCurrentInstance().proxy
 export const useUserStore = defineStore(
   'user',
   () => {
@@ -21,7 +22,7 @@ export const useUserStore = defineStore(
           localStorage.setItem('token', token.value)
         }
         userInfo.value = res.data.user_info
-        showToast('登录成功')
+        showToast($t('login.loginSuccess'))
         let redirectPath = route.query.redirect || '/'
         router.push(redirectPath, 500)
       } catch (error) {
