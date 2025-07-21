@@ -95,7 +95,7 @@ const initCamera = async () => {
         video: cameraConfig.value,
       })
       // 停止初始化的媒体流（仅用于触发权限）
-      stream.getTracks().forEach((track) => track.stop())
+      // stream.getTracks().forEach((track) => track.stop())
 
       // 重新枚举获取完整设备列表
       devices = await navigator.mediaDevices.enumerateDevices()
