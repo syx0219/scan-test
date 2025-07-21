@@ -75,8 +75,8 @@ const updateCameraConfig = (deviceArr) => {
     facingMode: cameraType.value,
     ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
     autoFocus: true,
-    width: 1200,
-    height: 800,
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
   }
 }
 // 初始化摄像头
@@ -86,22 +86,14 @@ const initCamera = async () => {
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
     let deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
 
-    updateCameraConfig(deviceArr)
-
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
     // 未获取权限时的处理
     if (!hasPermission) {
       let stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: cameraType.value,
-          autoFocus: true,
-          width: 1200,
-          height: 800,
-        },
+        video: cameraConfig.value,
       })
-
       // 停止初始化的媒体流（仅用于触发权限）
       stream.getTracks().forEach((track) => track.stop())
 
@@ -110,12 +102,7 @@ const initCamera = async () => {
       videoDevices = devices.filter((device) => device.kind === 'videoinput')
       deviceArr = videoDevices.filter((device) => device.label === 'camera2 3, facing back')
 
-      updateCameraConfig(deviceArr)
-
-      // 请求权限并获取媒体流
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: cameraConfig.value,
-      })
+      // updateCameraConfig(deviceArr)
     }
 
     if (videoDevices.length === 0) {
@@ -124,6 +111,7 @@ const initCamera = async () => {
 
     isCameraActive.value = true
     isScanning.value = true // 确保扫描状态为开启
+    updateCameraConfig(deviceArr)
   } catch (error) {
     await onCameraError(error)
   }
