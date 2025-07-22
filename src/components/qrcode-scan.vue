@@ -89,7 +89,6 @@ const updateCameraConfig = (deviceArr) => {
 }
 // 初始化摄像头
 const initCamera = async () => {
-  loading.value = true
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
@@ -134,6 +133,7 @@ const initCamera = async () => {
   }
 }
 onMounted(() => {
+  loading.value = true
   initCamera()
 })
 </script>
