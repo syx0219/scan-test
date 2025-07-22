@@ -38,11 +38,11 @@ const show = ref(false)
 const form = ref({})
 const text = ref(null)
 const codeScanned = (code) => {
-  // showToast(code)
+  showToast(code)
   text.value = JSON.parse(code)
-  showToast(text.value)
+  // showToast(text.value)
   // text.value = code
-  // show.value = true
+  show.value = true
 }
 const toSubmit = async () => {
   show.value = false
