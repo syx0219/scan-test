@@ -8,7 +8,6 @@
       @error="onCameraError"
     >
       <!-- 扫码界面遮罩 -->
-      {{ loading }}
       <div class="overlay">
         <div class="scan-frame"></div>
         <div class="tip-text">{{ $t('scaner.tips') }}</div>
@@ -36,12 +35,13 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
-const loading = ref(false)
+const loading = ref(true)
 // 计算摄像头配置
 const cameraConfig = ref(null)
 const onCameraOn = () => {
   alert('已打开摄像头')
   loading.value = false
+  initCamera()
 }
 // 扫码结果处理
 const onDetect = (result) => {
@@ -102,6 +102,7 @@ const initCamera = async () => {
 
     // 未获取权限时的处理
     if (!hasPermission) {
+      loading.value = true
       let stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraType.value,
@@ -133,8 +134,7 @@ const initCamera = async () => {
   }
 }
 onMounted(() => {
-  loading.value = true
-  initCamera()
+  // initCamera()
 })
 </script>
 <style scoped>
