@@ -7,8 +7,7 @@
       @error="onCameraError"
     >
       <!-- 扫码界面遮罩 -->
-      <div class="loading-indicator" v-if="loading">Loading...</div>
-      <div class="overlay" v-else>
+      <div class="overlay">
         <div class="scan-frame"></div>
         <div class="tip-text">{{ $t('scaner.tips') }}</div>
       </div>
@@ -34,7 +33,6 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
-const loading = ref(true)
 // 计算摄像头配置
 const cameraConfig = ref(null)
 // 扫码结果处理
@@ -83,7 +81,6 @@ const updateCameraConfig = (deviceArr) => {
 }
 // 初始化摄像头
 const initCamera = async () => {
-  loading.value = true
   try {
     isCameraActive.value = true
     let devices = await navigator.mediaDevices.enumerateDevices()
@@ -92,7 +89,13 @@ const initCamera = async () => {
       (device) =>
         device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
     )
-
+    cameraConfig.value = {
+      facingMode: cameraType.value,
+      ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
+      autoFocus: true,
+      width: 1200,
+      height: 800,
+    }
     // // 权限检测逻辑（通过 deviceId 是否为空判断）
     // const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
@@ -114,15 +117,12 @@ const initCamera = async () => {
     //     devices = await navigator.mediaDevices.enumerateDevices()
     //     videoDevices = devices.filter((device) => device.kind === 'videoinput')
     //   }
-    alert(videoDevices.length)
     if (videoDevices.length === 0) {
       throw new Error('NotFoundError')
     }
 
     isScanning.value = true // 确保扫描状态为开启
-    updateCameraConfig(deviceArr)
   } catch (error) {
-    loading.value = false
     await onCameraError(error)
   }
 }
