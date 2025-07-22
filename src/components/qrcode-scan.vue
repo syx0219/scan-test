@@ -24,7 +24,9 @@
 <script setup name="qrcode-scan">
 import { ref, computed, onMounted, defineEmits, getCurrentInstance } from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
+import { useRouter } from 'vue-router'
 const { $t } = getCurrentInstance().proxy
+const router = useRouter()
 const isCameraActive = ref(false)
 const showPermissionAlert = ref(false)
 const cameraType = ref('environment') // 'user' 前置 | 'environment' 后置
@@ -64,6 +66,7 @@ const onCameraError = async (error) => {
       errorMessage.value = $t('home.unknownError') + error.message
   }
   showFailToast(errorMessage.value)
+  router.back()
 }
 // 重新尝试授权
 const retryCamera = () => {
