@@ -16,12 +16,13 @@
     >
       <div class="popup-content">
         <!-- <div class="popup-text" v-if="text">{{ text }}</div> -->
-        <div class="popup-text" v-if="text">
+        <div class="popup-text" v-if="text && Object.keys(text).length > 0">
           <p>DEV_EUI:{{ text.dev_eui }}</p>
           <p>APP_EUI:{{ text.app_eui }}</p>
           <p>APP_KEY:{{ text.app_key }}</p>
           <p>SN:{{ text.sn }}</p>
         </div>
+        <div class="popup-text" v-else>{{ text }}</div>
       </div>
     </van-dialog>
   </div>
