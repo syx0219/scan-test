@@ -39,6 +39,7 @@ const loading = ref(false)
 // 计算摄像头配置
 const cameraConfig = ref(null)
 const onCameraOn = () => {
+  alert('已打开摄像头')
   loading.value = false
 }
 // 扫码结果处理
@@ -77,7 +78,6 @@ const retryCamera = () => {
   initCamera()
 }
 const updateCameraConfig = (deviceArr) => {
-  alert(deviceArr.length)
   cameraConfig.value = {
     facingMode: cameraType.value,
     ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
