@@ -101,7 +101,7 @@ const initCamera = async () => {
     } else {
       cameraConfig.value = {
         facingMode: cameraType.value,
-        deviceId: videoDevices[0].deviceId,
+        deviceId: videoDevices[videoDevices.length - 1].deviceId,
         autoFocus: true,
         width: 1200,
         height: 800,
