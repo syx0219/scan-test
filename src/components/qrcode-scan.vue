@@ -82,10 +82,30 @@ const updateCameraConfig = (deviceArr) => {
 // 初始化摄像头
 const initCamera = async () => {
   try {
-    isCameraActive.value = true
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    alert(JSON.stringify(videoDevices[0]))
+    // 权限检测逻辑（通过 deviceId 是否为空判断）
+    const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
+    // console.log('hasPermission-是否已获取摄像头权限',hasPermission)
+    // 未获取权限时的处理
+    if (!hasPermission) {
+      // console.log('尚未获得摄像头权限，开始请求权限...');
+      //触发权限弹窗并获取流
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: cameraType.value },
+      })
+      //停止初始化的媒体流（仅用于触发权限）
+      stream.getTracks().forEach((track) => track.stop())
+      // 重新枚举获取完整设备列表
+      devices = await navigator.mediaDevices.enumerateDevices()
+      videoDevices = devices.filter((device) => device.kind === 'videoinput')
+    }
+    // console.log("可用摄像头:", videoDevices);
+    if (videoDevices.length === 0) {
+      showFailToast($t('home.foundError'))
+    }
+    isScanning.value = true // 确保扫描状态为开启
+    isCameraActive.value = true
     let deviceArr = videoDevices.filter(
       (device) =>
         device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
@@ -107,11 +127,6 @@ const initCamera = async () => {
         height: 800,
       }
     }
-
-    if (videoDevices.length === 0) {
-      showFailToast($t('home.foundError'))
-    }
-    isScanning.value = true // 确保扫描状态为开启
   } catch (error) {
     await onCameraError(error)
   }

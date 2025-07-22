@@ -57,12 +57,12 @@ const passwoedPattern =
 const validator = (val) => {
   let isValidEmail = pattern.test(val)
   if (!isValidEmail) {
-    return '邮箱格式错误'
+    return $t('login.emailFail')
   }
 }
 const validatePass = (value) => {
   if (value === '' || !passwoedPattern.test(value)) {
-    return '密码格式错误'
+    return $t('login.passwordFail')
   }
 }
 
