@@ -8,6 +8,7 @@
       @error="onCameraError"
     >
       <!-- 扫码界面遮罩 -->
+      {{ loading }}
       <div class="overlay">
         <div class="scan-frame"></div>
         <div class="tip-text">{{ $t('scaner.tips') }}</div>
