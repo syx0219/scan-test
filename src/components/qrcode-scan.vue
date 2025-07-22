@@ -85,11 +85,11 @@ const initCamera = async () => {
     isCameraActive.value = true
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+    alert(JSON.stringify(videoDevices))
     let deviceArr = videoDevices.filter(
       (device) =>
         device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
     )
-    alert(JSON.stringify(deviceArr))
     cameraConfig.value = {
       facingMode: cameraType.value,
       ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
