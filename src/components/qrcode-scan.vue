@@ -97,31 +97,9 @@ const initCamera = async () => {
       width: 1200,
       height: 800,
     }
-    // // 权限检测逻辑（通过 deviceId 是否为空判断）
-    // const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
-
-    //   // 未获取权限时的处理
-    //   if (!hasPermission) {
-    //     let stream = await navigator.mediaDevices.getUserMedia({
-    //       video: {
-    //         facingMode: cameraType.value,
-    //         autoFocus: true,
-    //         width: 1200,
-    //         height: 800,
-    //       },
-    //     })
-
-    //     // 停止初始化的媒体流（仅用于触发权限）
-    //     stream.getTracks().forEach((track) => track.stop())
-
-    //     // 重新枚举获取完整设备列表
-    //     devices = await navigator.mediaDevices.enumerateDevices()
-    //     videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    //   }
     if (videoDevices.length === 0) {
-      throw new Error('NotFoundError')
+      showFailToast($t('home.foundError'))
     }
-
     isScanning.value = true // 确保扫描状态为开启
   } catch (error) {
     await onCameraError(error)
