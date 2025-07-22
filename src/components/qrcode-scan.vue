@@ -3,11 +3,11 @@
     <qrcode-stream
       v-if="isCameraActive"
       :constraints="cameraConfig"
-      @camera-on="onCameraOn"
       @detect="onDetect"
       @error="onCameraError"
     >
       <!-- 扫码界面遮罩 -->
+      {{ loading }}
       <div class="overlay">
         <div class="scan-frame"></div>
         <div class="tip-text">{{ $t('scaner.tips') }}</div>
@@ -38,10 +38,6 @@ const emit = defineEmits(['code-scanned'])
 const loading = ref(true)
 // 计算摄像头配置
 const cameraConfig = ref(null)
-const onCameraOn = () => {
-  console.log('11')
-  loading.value = false
-}
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
@@ -88,52 +84,53 @@ const updateCameraConfig = (deviceArr) => {
 }
 // 初始化摄像头
 const initCamera = async () => {
-  try {
-    let devices = await navigator.mediaDevices.enumerateDevices()
-    let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    let deviceArr = videoDevices.filter(
-      (device) =>
-        device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
-    )
+  loading.value = true
+  // try {
+  //   let devices = await navigator.mediaDevices.enumerateDevices()
+  //   let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+  //   let deviceArr = videoDevices.filter(
+  //     (device) =>
+  //       device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
+  //   )
 
-    // 权限检测逻辑（通过 deviceId 是否为空判断）
-    const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
+  //   // 权限检测逻辑（通过 deviceId 是否为空判断）
+  //   const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
-    // 未获取权限时的处理
-    if (!hasPermission) {
-      let stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: cameraType.value,
-          autoFocus: true,
-          width: 1200,
-          height: 800,
-        },
-      })
+  //   // 未获取权限时的处理
+  //   if (!hasPermission) {
+  //     let stream = await navigator.mediaDevices.getUserMedia({
+  //       video: {
+  //         facingMode: cameraType.value,
+  //         autoFocus: true,
+  //         width: 1200,
+  //         height: 800,
+  //       },
+  //     })
 
-      // 停止初始化的媒体流（仅用于触发权限）
-      stream.getTracks().forEach((track) => track.stop())
+  //     // 停止初始化的媒体流（仅用于触发权限）
+  //     stream.getTracks().forEach((track) => track.stop())
 
-      // 重新枚举获取完整设备列表
-      devices = await navigator.mediaDevices.enumerateDevices()
-      videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    }
+  //     // 重新枚举获取完整设备列表
+  //     devices = await navigator.mediaDevices.enumerateDevices()
+  //     videoDevices = devices.filter((device) => device.kind === 'videoinput')
+  //   }
 
-    if (videoDevices.length === 0) {
-      throw new Error('NotFoundError')
-    }
+  //   if (videoDevices.length === 0) {
+  //     throw new Error('NotFoundError')
+  //   }
 
-    isCameraActive.value = true
-    isScanning.value = true // 确保扫描状态为开启
-    loading.value = true
-    updateCameraConfig(deviceArr)
-  } catch (error) {
-    loading.value = false
-    await onCameraError(error)
-  }
+  //   isCameraActive.value = true
+  //   isScanning.value = true // 确保扫描状态为开启
+  //   loading.value = true
+  //   updateCameraConfig(deviceArr)
+  // } catch (error) {
+  //   loading.value = false
+  //   await onCameraError(error)
+  // }
 }
-// onMounted(() => {
-//   initCamera()
-// })
+onMounted(() => {
+  initCamera()
+})
 </script>
 <style scoped>
 .scanner-container {
