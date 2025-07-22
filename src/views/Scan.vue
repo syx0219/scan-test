@@ -16,13 +16,12 @@
     >
       <div class="popup-content">
         <!-- <div class="popup-text" v-if="text">{{ text }}</div> -->
-        <div class="popup-text" v-if="text && Object.keys(text).length > 0">
+        <div class="popup-text" v-if="text">
           <p>DEV_EUI:{{ text.dev_eui }}</p>
           <p>APP_EUI:{{ text.app_eui }}</p>
           <p>APP_KEY:{{ text.app_key }}</p>
           <p>SN:{{ text.sn }}</p>
         </div>
-        <div class="popup-text" v-else>{{ text }}</div>
       </div>
     </van-dialog>
   </div>
@@ -41,8 +40,9 @@ const text = ref(null)
 const codeScanned = (code) => {
   // showToast(code)
   text.value = JSON.parse(code)
+  showToast(text.value)
   // text.value = code
-  show.value = true
+  // show.value = true
 }
 const toSubmit = async () => {
   show.value = false
