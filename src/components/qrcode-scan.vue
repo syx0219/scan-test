@@ -89,6 +89,7 @@ const initCamera = async () => {
       (device) =>
         device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
     )
+    alert(JSON.stringify(deviceArr))
     cameraConfig.value = {
       facingMode: cameraType.value,
       ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
