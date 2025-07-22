@@ -86,7 +86,7 @@ const updateCameraConfig = (deviceArr) => {
 const initCamera = async () => {
   loading.value = true
   try {
-    let devices = await navigator.mediaDevices.enumerateDevices()
+    // let devices = await navigator.mediaDevices.enumerateDevices()
     //   let videoDevices = devices.filter((device) => device.kind === 'videoinput')
     //   let deviceArr = videoDevices.filter(
     //     (device) =>
@@ -119,7 +119,7 @@ const initCamera = async () => {
     //     throw new Error('NotFoundError')
     //   }
 
-    //   isCameraActive.value = true
+    isCameraActive.value = true
     //   isScanning.value = true // 确保扫描状态为开启
     //   loading.value = true
     //   updateCameraConfig(deviceArr)
