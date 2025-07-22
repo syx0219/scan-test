@@ -3,7 +3,6 @@
     <qrcode-stream
       v-if="isCameraActive"
       :constraints="cameraConfig"
-      @camera-on="onCameraOn"
       @detect="onDetect"
       @error="onCameraError"
     >
@@ -38,11 +37,6 @@ const emit = defineEmits(['code-scanned'])
 const loading = ref(true)
 // 计算摄像头配置
 const cameraConfig = ref(null)
-const onCameraOn = () => {
-  alert('已打开摄像头')
-  loading.value = false
-  initCamera()
-}
 // 扫码结果处理
 const onDetect = (result) => {
   if (!isScanning.value) return // 如果已停止扫描，不处理结果
@@ -100,25 +94,25 @@ const initCamera = async () => {
     // 权限检测逻辑（通过 deviceId 是否为空判断）
     const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
-    // 未获取权限时的处理
-    if (!hasPermission) {
-      loading.value = true
-      let stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: cameraType.value,
-          autoFocus: true,
-          width: 1200,
-          height: 800,
-        },
-      })
+    // // 未获取权限时的处理
+    // if (!hasPermission) {
+    //   loading.value = true
+    //   let stream = await navigator.mediaDevices.getUserMedia({
+    //     video: {
+    //       facingMode: cameraType.value,
+    //       autoFocus: true,
+    //       width: 1200,
+    //       height: 800,
+    //     },
+    //   })
 
-      // 停止初始化的媒体流（仅用于触发权限）
-      stream.getTracks().forEach((track) => track.stop())
+    //   // 停止初始化的媒体流（仅用于触发权限）
+    //   stream.getTracks().forEach((track) => track.stop())
 
-      // 重新枚举获取完整设备列表
-      devices = await navigator.mediaDevices.enumerateDevices()
-      videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    }
+    //   // 重新枚举获取完整设备列表
+    //   devices = await navigator.mediaDevices.enumerateDevices()
+    //   videoDevices = devices.filter((device) => device.kind === 'videoinput')
+    // }
 
     if (videoDevices.length === 0) {
       throw new Error('NotFoundError')
@@ -134,7 +128,7 @@ const initCamera = async () => {
   }
 }
 onMounted(() => {
-  // initCamera()
+  initCamera()
 })
 </script>
 <style scoped>
