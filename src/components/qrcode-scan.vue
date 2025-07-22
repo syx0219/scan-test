@@ -85,18 +85,29 @@ const initCamera = async () => {
     isCameraActive.value = true
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    alert(JSON.stringify(videoDevices))
+    alert(JSON.stringify(videoDevices[0]))
     let deviceArr = videoDevices.filter(
       (device) =>
         device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
     )
-    cameraConfig.value = {
-      facingMode: cameraType.value,
-      ...(deviceArr.length > 0 && { deviceId: deviceArr[0].deviceId }),
-      autoFocus: true,
-      width: 1200,
-      height: 800,
+    if (deviceArr.length > 0) {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+        deviceId: deviceArr[0].deviceId,
+        autoFocus: true,
+        width: 1200,
+        height: 800,
+      }
+    } else {
+      cameraConfig.value = {
+        facingMode: cameraType.value,
+        deviceId: videoDevices[0].deviceId,
+        autoFocus: true,
+        width: 1200,
+        height: 800,
+      }
     }
+
     if (videoDevices.length === 0) {
       showFailToast($t('home.foundError'))
     }
