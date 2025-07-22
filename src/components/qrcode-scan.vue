@@ -7,12 +7,11 @@
       @error="onCameraError"
     >
       <!-- 扫码界面遮罩 -->
-      {{ loading }}
-      <div class="overlay">
+      <div class="loading-indicator" v-if="loading">Loading...</div>
+      <div class="overlay" v-else>
         <div class="scan-frame"></div>
         <div class="tip-text">{{ $t('scaner.tips') }}</div>
       </div>
-      <div class="loading-indicator" v-if="loading">Loading...</div>
     </qrcode-stream>
     <!-- 权限提示 -->
     <div v-if="showPermissionAlert" class="permission-alert">
@@ -86,15 +85,16 @@ const updateCameraConfig = (deviceArr) => {
 const initCamera = async () => {
   loading.value = true
   try {
-    // let devices = await navigator.mediaDevices.enumerateDevices()
-    //   let videoDevices = devices.filter((device) => device.kind === 'videoinput')
-    //   let deviceArr = videoDevices.filter(
-    //     (device) =>
-    //       device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
-    //   )
+    isCameraActive.value = true
+    let devices = await navigator.mediaDevices.enumerateDevices()
+    let videoDevices = devices.filter((device) => device.kind === 'videoinput')
+    let deviceArr = videoDevices.filter(
+      (device) =>
+        device.label === 'camera2 3, facing back' || device.label === 'camera2 2, facing back'
+    )
 
-    //   // 权限检测逻辑（通过 deviceId 是否为空判断）
-    //   const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
+    // // 权限检测逻辑（通过 deviceId 是否为空判断）
+    // const hasPermission = videoDevices.length > 0 && videoDevices[0].deviceId !== ''
 
     //   // 未获取权限时的处理
     //   if (!hasPermission) {
@@ -114,15 +114,13 @@ const initCamera = async () => {
     //     devices = await navigator.mediaDevices.enumerateDevices()
     //     videoDevices = devices.filter((device) => device.kind === 'videoinput')
     //   }
+    alert(videoDevices.length)
+    if (videoDevices.length === 0) {
+      throw new Error('NotFoundError')
+    }
 
-    //   if (videoDevices.length === 0) {
-    //     throw new Error('NotFoundError')
-    //   }
-
-    isCameraActive.value = true
-    //   isScanning.value = true // 确保扫描状态为开启
-    //   loading.value = true
-    //   updateCameraConfig(deviceArr)
+    isScanning.value = true // 确保扫描状态为开启
+    updateCameraConfig(deviceArr)
   } catch (error) {
     loading.value = false
     await onCameraError(error)
