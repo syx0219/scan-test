@@ -34,7 +34,7 @@ let successTimer = ref()
 let errorTimer = ref()
 const errorMessage = ref('')
 const emit = defineEmits(['code-scanned'])
-const loading = ref(true)
+const loading = ref(false)
 // 计算摄像头配置
 const cameraConfig = ref(null)
 // 扫码结果处理
@@ -83,6 +83,8 @@ const updateCameraConfig = (deviceArr) => {
 }
 // 初始化摄像头
 const initCamera = async () => {
+  loading.value = true
+  alert('进来了')
   try {
     let devices = await navigator.mediaDevices.enumerateDevices()
     let videoDevices = devices.filter((device) => device.kind === 'videoinput')
