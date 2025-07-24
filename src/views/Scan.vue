@@ -15,13 +15,13 @@
       @confirm="toSubmit"
     >
       <div class="popup-content">
-        <!-- <div class="popup-text" v-if="text">{{ text }}</div> -->
-        <div class="popup-text" v-if="text">
+        <div class="popup-text" v-if="text">{{ text }}</div>
+        <!-- <div class="popup-text" v-if="text">
           <p>DEV_EUI:{{ text.dev_eui }}</p>
           <p>APP_EUI:{{ text.app_eui }}</p>
           <p>APP_KEY:{{ text.app_key }}</p>
           <p>SN:{{ text.sn }}</p>
-        </div>
+        </div> -->
       </div>
     </van-dialog>
   </div>
@@ -38,32 +38,32 @@ const show = ref(false)
 const form = ref({})
 const text = ref(null)
 const codeScanned = (code) => {
-  showToast(JSON.parse(code))
+  showToast(code)
   // text.value = JSON.parse(code)
   // showToast(text.value)
-  // text.value = code
-  // show.value = true
+  text.value = code
+  show.value = true
 }
 const toSubmit = async () => {
   show.value = false
-  try {
-    // const res = await addTrackers(form.value)
-    const res = await addTrackers({
-      dev_eui: '70B3D57ED006EC52',
-      app_eui: 'DF565DFDFDFCCCDD',
-      app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
-      sn: 'TRAL2252400100001',
-    })
-    if (res.code === 200) {
-      showToast($t('home.addSuccess'))
-      // setTimeout(() => {
-      router.back()
-      // }, 500)
-    }
-  } catch (error) {
-    // console.error(error)
-    showToast(error)
-  }
+  // try {
+  //   // const res = await addTrackers(form.value)
+  //   const res = await addTrackers({
+  //     dev_eui: '70B3D57ED006EC52',
+  //     app_eui: 'DF565DFDFDFCCCDD',
+  //     app_key: 'BB48F276F36B19B238B8E9C7D8E79558',
+  //     sn: 'TRAL2252400100001',
+  //   })
+  //   if (res.code === 200) {
+  //     showToast($t('home.addSuccess'))
+  //     setTimeout(() => {
+  //       router.back()
+  //     }, 500)
+  //   }
+  // } catch (error) {
+  //   // console.error(error)
+  //   showToast(error)
+  // }
 }
 </script>
 <style scoped>
