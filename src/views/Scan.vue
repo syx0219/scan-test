@@ -47,7 +47,7 @@ const textToJson = (text) => {
 const codeScanned = (code) => {
   text.value = code
   // show.value = true
-  alert(textToJson(code))
+  alert(JSON.stringify(textToJson(code)))
 }
 const toSubmit = async () => {
   show.value = false
